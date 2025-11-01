@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Experience - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create-experience.css' %}">
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
+
+{% block nav_experience %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">Create New Experience</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<form class="create-form" id="create-experience-form">
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Basic Information</h2>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Category *</label>
+                <select class="form-input" required>
+                    <option value="">Select Category</option>
+                    <option value="full-time">Full-time Employment</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="freelance">Freelance</option>
+                    <option value="contract">Contract</option>
+                    <option value="internship">Internship</option>
+                    <option value="volunteer">Volunteer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Employment Status *</label>
+                <select class="form-input" required>
+                    <option value="current">Current</option>
+                    <option value="past">Past</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Position Title *</label>
+            <input type="text" class="form-input" placeholder="e.g., Senior Full Stack Developer" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Location</label>
+            <input type="text" class="form-input" placeholder="e.g., San Francisco, CA or Remote">
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Company Information</h2>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Company Name *</label>
+            <input type="text" class="form-input" placeholder="Enter company name" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">About Company</label>
+            <textarea class="form-textarea" rows="3" placeholder="Brief description of the company"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Company Website</label>
+            <input type="url" class="form-input" placeholder="https://company.com">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Company Logo</label>
+            <div class="file-upload-area" id="logo-upload">
+                <i class="fas fa-building"></i>
+                <p>Click to upload company logo</p>
+                <span class="file-info">PNG, JPG, SVG (Max 2MB)</span>
+                <input type="file" accept="image/*" hidden>
+            </div>
+            <div class="preview-container" id="logo-preview"></div>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Employment Duration</h2>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Start Date *</label>
+                <input type="month" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">End Date</label>
+                <input type="month" class="form-input" id="end-date">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="currently-working"> I currently work here
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Experience Description</h2>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Short Description *</label>
+            <textarea class="form-textarea" rows="3" placeholder="Brief summary of your role and responsibilities" required></textarea>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Workplace Images</h2>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Upload Images</label>
+            <div class="file-upload-area" id="workplace-upload">
+                <i class="fas fa-images"></i>
+                <p>Click to upload workplace photos</p>
+                <span class="file-info">PNG, JPG (Max 5MB each)</span>
+                <input type="file" accept="image/*" multiple hidden>
+            </div>
+            <div class="preview-grid" id="workplace-preview"></div>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Detailed Experience</h2>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Detailed Description *</label>
+            <textarea id="experience-details" class="tinymce-editor"></textarea>
+        </div>
+    </section>
+
+    <div class="form-actions">
+        <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
+        <button type="button" class="btn-secondary">Save as Draft</button>
+        <button type="submit" class="btn-primary">Publish Experience</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/create-experience.js' %}"></script>
+{% endblock %}

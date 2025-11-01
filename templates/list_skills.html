@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Skills - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/manage-skills.css' %}">
+<link rel="stylesheet" href="{% static 'css/view-all-skills.css' %}">
+{% endblock %}
+
+{% block nav_skills %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">All Skills</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<div class="page-actions-header">
+    <a href="{% url 'create_skill' %}" class="btn-primary">
+        <i class="fas fa-plus-circle"></i> Add New Skill
+    </a>
+</div>
+
+<div class="filter-bar section-card">
+    <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" id="search-input" placeholder="Search by skill name...">
+    </div>
+    <div class="filter-controls">
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All <span class="count">(8)</span></button>
+            <button class="filter-btn" data-filter="active">Active <span class="count">(6)</span></button>
+            <button class="filter-btn" data-filter="draft">Draft <span class="count">(2)</span></button>
+        </div>
+        <div class="sort-group">
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select">
+                <option value="proficiency">Highest Proficiency</option>
+                <option value="lowest">Lowest Proficiency</option>
+                <option value="name-az">Name (A-Z)</option>
+                <option value="name-za">Name (Z-A)</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="skills-grid" id="all-skills-grid">
+    <!-- Active Skills -->
+    <div class="skill-card fade-in" data-status="active" data-title="JavaScript" data-proficiency="95">
+        <div class="skill-header">
+            <h4>JavaScript</h4>
+            <span class="skill-percentage">95%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-progress" style="width: 95%;"></div>
+        </div>
+        <div class="skill-meta">
+            <span class="skill-level-badge expert">Expert</span>
+            <span class="skill-years">5+ years</span>
+        </div>
+        <span class="status-badge status-active">Active</span>
+        <div class="skill-actions">
+            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <div class="action-buttons">
+                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-card fade-in" data-status="active" data-title="React.js" data-proficiency="90">
+        <div class="skill-header">
+            <h4>React.js</h4>
+            <span class="skill-percentage">90%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-progress" style="width: 90%;"></div>
+        </div>
+        <div class="skill-meta">
+            <span class="skill-level-badge advanced">Advanced</span>
+            <span class="skill-years">4+ years</span>
+        </div>
+        <span class="status-badge status-active">Active</span>
+        <div class="skill-actions">
+            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <div class="action-buttons">
+                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-card fade-in" data-status="active" data-title="Node.js" data-proficiency="88">
+        <div class="skill-header">
+            <h4>Node.js</h4>
+            <span class="skill-percentage">88%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-progress" style="width: 88%;"></div>
+        </div>
+        <div class="skill-meta">
+            <span class="skill-level-badge advanced">Advanced</span>
+            <span class="skill-years">4+ years</span>
+        </div>
+        <span class="status-badge status-active">Active</span>
+        <div class="skill-actions">
+            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <div class="action-buttons">
+                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-card fade-in" data-status="active" data-title="Python" data-proficiency="85">
+        <div class="skill-header">
+            <h4>Python</h4>
+            <span class="skill-percentage">85%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-progress" style="width: 85%;"></div>
+        </div>
+        <div class="skill-meta">
+            <span class="skill-level-badge advanced">Advanced</span>
+            <span class="skill-years">3+ years</span>
+        </div>
+        <span class="status-badge status-active">Active</span>
+        <div class="skill-actions">
+            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <div class="action-buttons">
+                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-card fade-in" data-status="active" data-title="MongoDB" data-proficiency="82">
+        <div class="skill-header">
+            <h4>MongoDB</h4>
+            <span class="skill-percentage">82%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-progress" style="width: 82%;"></div>
+        </div>
+        <div class="skill-meta">
+            <span class="skill-level-badge advanced">Advanced</span>
+            <span class="skill-years">3+ years</span>
+        </div>
+        <span class="status-badge status-active">Active</span>
+        <div class="skill-actions">
+            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <div class="action-buttons">
+                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-card fade-in" data-status="active" data-title="Docker" data-proficiency="75">
+        <div class="skill-header">
+            <h4>Docker</h4>
+            <span class="skill-percentage">75%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-progress" style="width: 75%;"></div>
+        </div>
+        <div class="skill-meta">
+            <span class="skill-level-badge intermediate">Intermediate</span>
+            <span class="skill-years">2+ years</span>
+        </div>
+        <span class="status-badge status-active">Active</span>
+        <div class="skill-actions">
+            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <div class="action-buttons">
+                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Draft Skills -->
+    <div class="skill-card draft fade-in" data-status="draft" data-title="Kubernetes" data-proficiency="60">
+        <div class="skill-header">
+            <h4>Kubernetes</h4>
+            <span class="skill-percentage">60%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-progress" style="width: 60%;"></div>
+        </div>
+        <div class="skill-meta">
+            <span class="skill-level-badge intermediate">Intermediate</span>
+            <span class="skill-years">1+ years</span>
+        </div>
+        <span class="status-badge status-draft">Draft</span>
+        <div class="skill-actions">
+            <label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label>
+            <div class="action-buttons">
+                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-card draft fade-in" data-status="draft" data-title="GraphQL" data-proficiency="70">
+        <div class="skill-header">
+            <h4>GraphQL</h4>
+            <span class="skill-percentage">70%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-progress" style="width: 70%;"></div>
+        </div>
+        <div class="skill-meta">
+            <span class="skill-level-badge intermediate">Intermediate</span>
+            <span class="skill-years">1+ years</span>
+        </div>
+        <span class="status-badge status-draft">Draft</span>
+        <div class="skill-actions">
+            <label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label>
+            <div class="action-buttons">
+                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="no-results" id="no-results" style="display: none;">
+    <i class="fas fa-search"></i>
+    <p>No skills found matching your criteria.</p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/view-all-skills.js' %}"></script>
+{% endblock %}
+

@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Responses - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/list-contact-responses.css' %}">
+{% endblock %}
+
+{% block nav_analytics %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">Contact Responses</h1>
+{% endblock %}
+
+{% block content %}
+<!-- Filter and Search Bar -->
+<div class="filter-bar">
+    <div class="filter-controls">
+        <button class="filter-btn active" data-filter="all">
+            <i class="fas fa-list"></i> All (89)
+        </button>
+        <button class="filter-btn" data-filter="urgent">
+            <i class="fas fa-exclamation-circle"></i> Urgent (12)
+        </button>
+        <button class="filter-btn" data-filter="normal">
+            <i class="fas fa-info-circle"></i> Normal (77)
+        </button>
+        <button class="filter-btn" data-filter="responded">
+            <i class="fas fa-check-circle"></i> Responded (67)
+        </button>
+        <button class="filter-btn" data-filter="pending">
+            <i class="fas fa-clock"></i> Pending (22)
+        </button>
+    </div>
+    
+    <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by name, email, or message...">
+    </div>
+    
+    <select id="sortSelect" class="sort-select">
+        <option value="date-desc">Newest First</option>
+        <option value="date-asc">Oldest First</option>
+        <option value="name">Name (A-Z)</option>
+    </select>
+</div>
+
+<!-- Stats Summary -->
+<div class="stats-summary">
+    <div class="summary-card">
+        <div class="summary-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+            <i class="fas fa-envelope"></i>
+        </div>
+        <div class="summary-info">
+            <h3>89</h3>
+            <p>Total Responses</p>
+        </div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="summary-info">
+            <h3>12</h3>
+            <p>Urgent</p>
+        </div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="summary-info">
+            <h3>67</h3>
+            <p>Responded</p>
+        </div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="summary-info">
+            <h3>22</h3>
+            <p>Pending</p>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Responses Grid -->
+<div class="responses-grid" id="responsesGrid">
+    <!-- Urgent Response 1 -->
+    <div class="response-card urgent" data-priority="urgent" data-status="pending" data-name="Sarah Johnson" data-date="2024-10-31T14:30:00">
+        <div class="response-header">
+            <div class="response-meta">
+                <div class="sender-info">
+                    <div class="sender-avatar">SJ</div>
+                    <div>
+                        <h3>Sarah Johnson</h3>
+                        <p class="sender-email">sarah.johnson@company.com</p>
+                    </div>
+                </div>
+                <div class="badges">
+                    <span class="priority-badge urgent"><i class="fas fa-exclamation-circle"></i> Urgent</span>
+                    <span class="status-badge pending"><i class="fas fa-clock"></i> Pending</span>
+                </div>
+            </div>
+            <span class="response-time"><i class="far fa-clock"></i> 2 hours ago</span>
+        </div>
+        
+        <div class="response-body">
+            <p class="response-subject"><strong>Subject:</strong> Urgent Project Opportunity</p>
+            <p class="response-message">Hi, I'm interested in hiring you for a urgent project. We need a full-stack developer ASAP for a React and Node.js application. The project timeline is tight, and we're looking to start immediately. Please respond at your earliest convenience to discuss details and compensation.</p>
+        </div>
+        
+        <div class="response-footer">
+            <div class="response-details">
+                <span><i class="fas fa-phone"></i> +1 (555) 123-4567</span>
+                <span><i class="fas fa-building"></i> Tech Solutions Inc.</span>
+            </div>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View Full</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
+                <button class="btn-success btn-sm"><i class="fas fa-check"></i> Mark Responded</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Urgent Response 2 -->
+    <div class="response-card urgent" data-priority="urgent" data-status="pending" data-name="David Park" data-date="2024-10-31T10:15:00">
+        <div class="response-header">
+            <div class="response-meta">
+                <div class="sender-info">
+                    <div class="sender-avatar">DP</div>
+                    <div>
+                        <h3>David Park</h3>
+                        <p class="sender-email">d.park@startup.io</p>
+                    </div>
+                </div>
+                <div class="badges">
+                    <span class="priority-badge urgent"><i class="fas fa-exclamation-circle"></i> Urgent</span>
+                    <span class="status-badge pending"><i class="fas fa-clock"></i> Pending</span>
+                </div>
+            </div>
+            <span class="response-time"><i class="far fa-clock"></i> 6 hours ago</span>
+        </div>
+        
+        <div class="response-body">
+            <p class="response-subject"><strong>Subject:</strong> Emergency Bug Fix Needed</p>
+            <p class="response-message">We have a critical bug in our production system and need immediate help. Saw your expertise with Node.js and would love to have you look at it urgently. Can you help today?</p>
+        </div>
+        
+        <div class="response-footer">
+            <div class="response-details">
+                <span><i class="fas fa-phone"></i> +1 (555) 987-6543</span>
+                <span><i class="fas fa-building"></i> StartupXYZ</span>
+            </div>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View Full</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
+                <button class="btn-success btn-sm"><i class="fas fa-check"></i> Mark Responded</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Normal Response 1 - Responded -->
+    <div class="response-card" data-priority="normal" data-status="responded" data-name="Michael Chen" data-date="2024-10-31T09:20:00">
+        <div class="response-header">
+            <div class="response-meta">
+                <div class="sender-info">
+                    <div class="sender-avatar">MC</div>
+                    <div>
+                        <h3>Michael Chen</h3>
+                        <p class="sender-email">m.chen@techcorp.io</p>
+                    </div>
+                </div>
+                <div class="badges">
+                    <span class="priority-badge normal"><i class="fas fa-info-circle"></i> Normal</span>
+                    <span class="status-badge responded"><i class="fas fa-check-circle"></i> Responded</span>
+                </div>
+            </div>
+            <span class="response-time"><i class="far fa-clock"></i> 7 hours ago</span>
+        </div>
+        
+        <div class="response-body">
+            <p class="response-subject"><strong>Subject:</strong> Collaboration Opportunity</p>
+            <p class="response-message">Great portfolio! I'd love to discuss potential collaboration opportunities. Let me know if you're available for a call next week to explore some ideas I have for a new project.</p>
+        </div>
+        
+        <div class="response-footer">
+            <div class="response-details">
+                <span><i class="fas fa-phone"></i> +1 (555) 246-8101</span>
+                <span><i class="fas fa-building"></i> TechCorp</span>
+            </div>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View Full</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Normal Response 2 - Pending -->
+    <div class="response-card" data-priority="normal" data-status="pending" data-name="Emily Rodriguez" data-date="2024-10-30T16:45:00">
+        <div class="response-header">
+            <div class="response-meta">
+                <div class="sender-info">
+                    <div class="sender-avatar">ER</div>
+                    <div>
+                        <h3>Emily Rodriguez</h3>
+                        <p class="sender-email">emily.r@startup.com</p>
+                    </div>
+                </div>
+                <div class="badges">
+                    <span class="priority-badge normal"><i class="fas fa-info-circle"></i> Normal</span>
+                    <span class="status-badge pending"><i class="fas fa-clock"></i> Pending</span>
+                </div>
+            </div>
+            <span class="response-time"><i class="far fa-clock"></i> 1 day ago</span>
+        </div>
+        
+        <div class="response-body">
+            <p class="response-subject"><strong>Subject:</strong> Question About AI Chatbot Project</p>
+            <p class="response-message">Impressive work on the AI Chatbot project! Would you be open to discussing how you built it? I'm working on something similar and would love some guidance.</p>
+        </div>
+        
+        <div class="response-footer">
+            <div class="response-details">
+                <span><i class="fas fa-phone"></i> +1 (555) 369-2580</span>
+                <span><i class="fas fa-building"></i> Startup Labs</span>
+            </div>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View Full</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
+                <button class="btn-success btn-sm"><i class="fas fa-check"></i> Mark Responded</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Normal Response 3 - Responded -->
+    <div class="response-card" data-priority="normal" data-status="responded" data-name="James Wilson" data-date="2024-10-30T11:30:00">
+        <div class="response-header">
+            <div class="response-meta">
+                <div class="sender-info">
+                    <div class="sender-avatar">JW</div>
+                    <div>
+                        <h3>James Wilson</h3>
+                        <p class="sender-email">j.wilson@agency.com</p>
+                    </div>
+                </div>
+                <div class="badges">
+                    <span class="priority-badge normal"><i class="fas fa-info-circle"></i> Normal</span>
+                    <span class="status-badge responded"><i class="fas fa-check-circle"></i> Responded</span>
+                </div>
+            </div>
+            <span class="response-time"><i class="far fa-clock"></i> 1 day ago</span>
+        </div>
+        
+        <div class="response-body">
+            <p class="response-subject"><strong>Subject:</strong> Freelance Development Work</p>
+            <p class="response-message">We're looking for a talented developer to join our team on a freelance basis. Your skills align perfectly with what we need. Would you be interested in discussing a long-term contract?</p>
+        </div>
+        
+        <div class="response-footer">
+            <div class="response-details">
+                <span><i class="fas fa-phone"></i> +1 (555) 147-2589</span>
+                <span><i class="fas fa-building"></i> Digital Agency</span>
+            </div>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View Full</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Normal Response 4 - Pending -->
+    <div class="response-card" data-priority="normal" data-status="pending" data-name="Lisa Anderson" data-date="2024-10-29T14:20:00">
+        <div class="response-header">
+            <div class="response-meta">
+                <div class="sender-info">
+                    <div class="sender-avatar">LA</div>
+                    <div>
+                        <h3>Lisa Anderson</h3>
+                        <p class="sender-email">l.anderson@firm.com</p>
+                    </div>
+                </div>
+                <div class="badges">
+                    <span class="priority-badge normal"><i class="fas fa-info-circle"></i> Normal</span>
+                    <span class="status-badge pending"><i class="fas fa-clock"></i> Pending</span>
+                </div>
+            </div>
+            <span class="response-time"><i class="far fa-clock"></i> 2 days ago</span>
+        </div>
+        
+        <div class="response-body">
+            <p class="response-subject"><strong>Subject:</strong> Speaking Opportunity</p>
+            <p class="response-message">Hello! We're organizing a tech conference and would love to have you as a speaker. Your experience with AI and web development would be valuable to our audience. Interested?</p>
+        </div>
+        
+        <div class="response-footer">
+            <div class="response-details">
+                <span><i class="fas fa-phone"></i> +1 (555) 753-9514</span>
+                <span><i class="fas fa-building"></i> Event Management Firm</span>
+            </div>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View Full</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
+                <button class="btn-success btn-sm"><i class="fas fa-check"></i> Mark Responded</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Urgent Response 3 - Responded -->
+    <div class="response-card urgent" data-priority="urgent" data-status="responded" data-name="Robert Kim" data-date="2024-10-29T08:00:00">
+        <div class="response-header">
+            <div class="response-meta">
+                <div class="sender-info">
+                    <div class="sender-avatar">RK</div>
+                    <div>
+                        <h3>Robert Kim</h3>
+                        <p class="sender-email">r.kim@enterprise.com</p>
+                    </div>
+                </div>
+                <div class="badges">
+                    <span class="priority-badge urgent"><i class="fas fa-exclamation-circle"></i> Urgent</span>
+                    <span class="status-badge responded"><i class="fas fa-check-circle"></i> Responded</span>
+                </div>
+            </div>
+            <span class="response-time"><i class="far fa-clock"></i> 2 days ago</span>
+        </div>
+        
+        <div class="response-body">
+            <p class="response-subject"><strong>Subject:</strong> Critical Migration Project</p>
+            <p class="response-message">We need urgent help migrating our legacy system to a modern stack. Timeline is 2 weeks. Your experience with both old and new technologies makes you perfect for this. Can we talk ASAP?</p>
+        </div>
+        
+        <div class="response-footer">
+            <div class="response-details">
+                <span><i class="fas fa-phone"></i> +1 (555) 852-7413</span>
+                <span><i class="fas fa-building"></i> Enterprise Solutions</span>
+            </div>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View Full</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Normal Response 5 - Pending -->
+    <div class="response-card" data-priority="normal" data-status="pending" data-name="Amanda Taylor" data-date="2024-10-28T13:15:00">
+        <div class="response-header">
+            <div class="response-meta">
+                <div class="sender-info">
+                    <div class="sender-avatar">AT</div>
+                    <div>
+                        <h3>Amanda Taylor</h3>
+                        <p class="sender-email">a.taylor@consulting.com</p>
+                    </div>
+                </div>
+                <div class="badges">
+                    <span class="priority-badge normal"><i class="fas fa-info-circle"></i> Normal</span>
+                    <span class="status-badge pending"><i class="fas fa-clock"></i> Pending</span>
+                </div>
+            </div>
+            <span class="response-time"><i class="far fa-clock"></i> 3 days ago</span>
+        </div>
+        
+        <div class="response-body">
+            <p class="response-subject"><strong>Subject:</strong> Technical Consultation Request</p>
+            <p class="response-message">We're looking for a technical consultant to help us with our digital transformation strategy. Your portfolio showcases exactly the kind of expertise we need. Would you be available for a consultation?</p>
+        </div>
+        
+        <div class="response-footer">
+            <div class="response-details">
+                <span><i class="fas fa-phone"></i> +1 (555) 951-3578</span>
+                <span><i class="fas fa-building"></i> Business Consulting</span>
+            </div>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View Full</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
+                <button class="btn-success btn-sm"><i class="fas fa-check"></i> Mark Responded</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/list-contact-responses.js' %}"></script>
+{% endblock %}

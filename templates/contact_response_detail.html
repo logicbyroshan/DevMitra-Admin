@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Response Detail - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact-response-detail.css' %}">
+{% endblock %}
+
+{% block nav_analytics %}active{% endblock %}
+
+{% block navbar_left %}
+<div class="breadcrumb-nav">
+    <a href="{% url 'manage_analytics' %}" class="breadcrumb-link">
+        <i class="fas fa-chart-line"></i> Analytics
+    </a>
+    <i class="fas fa-chevron-right breadcrumb-separator"></i>
+    <a href="{% url 'list_contact_responses' %}" class="breadcrumb-link">
+        <i class="fas fa-envelope"></i> Contact Responses
+    </a>
+    <i class="fas fa-chevron-right breadcrumb-separator"></i>
+    <span class="breadcrumb-current">Message Detail</span>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Back Button -->
+<div class="back-navigation">
+    <a href="{% url 'list_contact_responses' %}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back to Contact Responses
+    </a>
+</div>
+
+<!-- Message Detail Card -->
+<div class="message-detail-container">
+    <div class="message-card">
+        <!-- Header Section -->
+        <div class="message-header">
+            <div class="sender-section">
+                <div class="sender-avatar-large">SJ</div>
+                <div class="sender-details">
+                    <h1 class="sender-name">Sarah Johnson</h1>
+                    <p class="sender-email"><i class="fas fa-envelope"></i> sarah.johnson@company.com</p>
+                    <p class="sender-phone"><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p class="sender-company"><i class="fas fa-building"></i> Tech Solutions Inc.</p>
+                </div>
+            </div>
+            
+            <div class="message-meta">
+                <div class="badges-container">
+                    <span class="priority-badge urgent">
+                        <i class="fas fa-exclamation-circle"></i> Urgent
+                    </span>
+                    <span class="status-badge pending">
+                        <i class="fas fa-clock"></i> Pending
+                    </span>
+                </div>
+                <div class="timestamp-container">
+                    <div class="timestamp-row">
+                        <i class="far fa-calendar-alt"></i>
+                        <span class="timestamp-label">Received:</span>
+                        <span class="timestamp-value">October 31, 2024</span>
+                    </div>
+                    <div class="timestamp-row">
+                        <i class="far fa-clock"></i>
+                        <span class="timestamp-label">Time:</span>
+                        <span class="timestamp-value">2:30 PM (2 hours ago)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subject Section -->
+        <div class="message-subject">
+            <h2><i class="fas fa-tag"></i> Subject</h2>
+            <p>Urgent Project Opportunity</p>
+        </div>
+
+        <!-- Message Body -->
+        <div class="message-body">
+            <h2><i class="fas fa-comment-alt"></i> Message</h2>
+            <div class="message-content">
+                <p>Hi,</p>
+                <p>I'm interested in hiring you for a urgent project. We need a full-stack developer ASAP for a React and Node.js application. The project timeline is tight, and we're looking to start immediately.</p>
+                <p>Our team at Tech Solutions Inc. has been impressed by your portfolio, particularly your work on the E-Commerce Platform and AI Chatbot projects. We believe your expertise aligns perfectly with our requirements.</p>
+                <p><strong>Project Details:</strong></p>
+                <ul>
+                    <li>Technology Stack: React, Node.js, MongoDB, AWS</li>
+                    <li>Duration: 3-4 months</li>
+                    <li>Start Date: Immediate</li>
+                    <li>Budget: Competitive, negotiable based on experience</li>
+                </ul>
+                <p>Please respond at your earliest convenience to discuss details and compensation. We're excited about the possibility of working with you!</p>
+                <p>Best regards,<br>
+                Sarah Johnson<br>
+                Senior HR Manager<br>
+                Tech Solutions Inc.</p>
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="additional-info">
+            <div class="info-section">
+                <h3><i class="fas fa-user-circle"></i> Contact Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Name:</span>
+                        <span class="info-value">Sarah Johnson</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">sarah.johnson@company.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">+1 (555) 123-4567</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Company:</span>
+                        <span class="info-value">Tech Solutions Inc.</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">IP Address:</span>
+                        <span class="info-value">192.168.1.100</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Browser:</span>
+                        <span class="info-value">Chrome 118.0 (Windows 10)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3><i class="fas fa-info-circle"></i> Message Details</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Message ID:</span>
+                        <span class="info-value">#CR-2024-001</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Priority:</span>
+                        <span class="info-value priority-urgent">Urgent</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value status-pending">Pending Response</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Received:</span>
+                        <span class="info-value">October 31, 2024 at 2:30 PM</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Source:</span>
+                        <span class="info-value">Portfolio Contact Form</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Read Status:</span>
+                        <span class="info-value">Unread</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-section">
+            <div class="action-buttons">
+                <button class="btn-action btn-reply">
+                    <i class="fas fa-reply"></i> Reply to Message
+                </button>
+                <button class="btn-action btn-mark-responded">
+                    <i class="fas fa-check"></i> Mark as Responded
+                </button>
+                <button class="btn-action btn-forward">
+                    <i class="fas fa-share"></i> Forward
+                </button>
+                <button class="btn-action btn-archive">
+                    <i class="fas fa-archive"></i> Archive
+                </button>
+                <button class="btn-action btn-delete">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar - Response History (Optional) -->
+    <div class="sidebar-card">
+        <h3><i class="fas fa-history"></i> Response History</h3>
+        <div class="history-timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot received"></div>
+                <div class="timeline-content">
+                    <p class="timeline-title">Message Received</p>
+                    <p class="timeline-time">Oct 31, 2024 - 2:30 PM</p>
+                    <p class="timeline-desc">Contact form submitted from portfolio website</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot viewed"></div>
+                <div class="timeline-content">
+                    <p class="timeline-title">Message Viewed</p>
+                    <p class="timeline-time">Oct 31, 2024 - 4:15 PM</p>
+                    <p class="timeline-desc">Opened in admin panel</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <h4>Quick Actions</h4>
+            <button class="quick-action-btn">
+                <i class="fas fa-print"></i> Print Message
+            </button>
+            <button class="quick-action-btn">
+                <i class="fas fa-download"></i> Download as PDF
+            </button>
+            <button class="quick-action-btn">
+                <i class="fas fa-copy"></i> Copy to Clipboard
+            </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/contact-response-detail.js' %}"></script>
+{% endblock %}

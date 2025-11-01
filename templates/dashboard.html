@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AI Admin Panel - Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dev.css' %}">
+{% endblock %}
+
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+<!-- Quick Look Stats -->
+<div class="stats-grid">
+    <div class="stat-card fade-in">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);"><i class="fas fa-project-diagram"></i></div>
+        <div class="stat-info">
+            <p class="stat-title">Total Projects</p>
+            <span class="stat-value">48</span>
+        </div>
+        <div class="stat-change positive"><i class="fas fa-arrow-up"></i><span>+12.5%</span></div>
+    </div>
+    <div class="stat-card fade-in" style="animation-delay: 0.1s;">
+       <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);"><i class="fas fa-briefcase"></i></div>
+        <div class="stat-info">
+            <p class="stat-title">Total Experience</p>
+            <span class="stat-value">8</span>
+        </div>
+        <div class="stat-change positive"><i class="fas fa-arrow-up"></i><span>+25%</span></div>
+    </div>
+    <div class="stat-card fade-in" style="animation-delay: 0.2s;">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);"><i class="fas fa-trophy"></i></div>
+        <div class="stat-info">
+            <p class="stat-title">Total Achievements</p>
+            <span class="stat-value">24</span>
+        </div>
+        <div class="stat-change positive"><i class="fas fa-arrow-up"></i><span>+8.3%</span></div>
+    </div>
+    <div class="stat-card fade-in" style="animation-delay: 0.3s;">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);"><i class="fas fa-tools"></i></div>
+        <div class="stat-info">
+            <p class="stat-title">Total Skills</p>
+            <span class="stat-value">36</span>
+        </div>
+        <div class="stat-change positive"><i class="fas fa-arrow-up"></i><span>+5.2%</span></div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="section-card fade-in">
+    <h2 class="section-title">Quick Actions</h2>
+    <div class="actions-grid">
+        <a href="{% url 'create_project' %}" class="action-btn"><i class="fas fa-plus-circle"></i><span>New Project</span></a>
+        <a href="{% url 'create_experience' %}" class="action-btn"><i class="fas fa-briefcase"></i><span>Add Experience</span></a>
+        <a href="{% url 'create_achievement' %}" class="action-btn"><i class="fas fa-trophy"></i><span>Add Achievement</span></a>
+        <a href="{% url 'create_skill' %}" class="action-btn"><i class="fas fa-plus"></i><span>Add Skill</span></a>
+    </div>
+</div>
+
+<div class="content-grid">
+    <div class="main-column">
+        <!-- Recent Projects -->
+        <div class="section-card fade-in">
+            <h2 class="section-title">Recent Projects</h2>
+            <div class="projects-list">
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <h3 class="list-item-title">E-Commerce Platform</h3>
+                        <p class="list-item-meta">Technologies: React, Node.js, MongoDB | Status: Completed</p>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <h3 class="list-item-title">AI Chatbot Integration</h3>
+                        <p class="list-item-meta">Technologies: Python, TensorFlow, Flask | Status: In Progress</p>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <h3 class="list-item-title">Mobile Banking App</h3>
+                        <p class="list-item-meta">Technologies: Flutter, Firebase, Dart | Status: Completed</p>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Experience -->
+        <div class="section-card fade-in">
+            <h2 class="section-title">Recent Experience</h2>
+            <div class="experience-list">
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <h3 class="list-item-title">Senior Full Stack Developer - TechCorp Inc.</h3>
+                        <p class="list-item-meta">Duration: Jan 2023 - Present | Location: Remote</p>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <h3 class="list-item-title">Frontend Developer - WebSolutions Ltd.</h3>
+                        <p class="list-item-meta">Duration: Mar 2021 - Dec 2022 | Location: New York, USA</p>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Achievements -->
+        <div class="section-card fade-in">
+            <h2 class="section-title">Recent Achievements</h2>
+            <div class="achievements-list">
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <h3 class="list-item-title">AWS Certified Solutions Architect</h3>
+                        <p class="list-item-meta">Issued by: Amazon Web Services | Date: September 2025</p>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <h3 class="list-item-title">Best Innovation Award 2025</h3>
+                        <p class="list-item-meta">Issued by: Tech Summit | Date: August 2025</p>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <h3 class="list-item-title">Google Cloud Professional Developer</h3>
+                        <p class="list-item-meta">Issued by: Google Cloud | Date: June 2025</p>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Categories (Right Column) -->
+    <div class="section-card fade-in skills-card">
+        <h2 class="section-title">Top Skills</h2>
+        <div class="skills-list">
+            <div class="skill-item">
+                <div class="skill-info">
+                    <span class="skill-name">JavaScript</span>
+                    <span class="skill-level">Expert</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 95%;"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info">
+                    <span class="skill-name">React.js</span>
+                    <span class="skill-level">Advanced</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 90%;"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info">
+                    <span class="skill-name">Node.js</span>
+                    <span class="skill-level">Advanced</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 88%;"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info">
+                    <span class="skill-name">Python</span>
+                    <span class="skill-level">Advanced</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 85%;"></div>
+                </div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info">
+                    <span class="skill-name">AWS</span>
+                    <span class="skill-level">Advanced</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: 82%;"></div>
+                </div>
+            </div>
+        </div>
+        <a href="{% url 'manage_skills' %}" class="view-all-link">
+            <span>View All Skills</span>
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="section-card fade-in categories-card">
+        <h2 class="section-title">Categories</h2>
+        <div class="categories-compact">
+            <div class="category-item">
+                <div class="category-icon-small" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="category-info-small">
+                    <h5>Web Dev</h5>
+                    <span>15 Projects</span>
+                </div>
+            </div>
+            <div class="category-item">
+                <div class="category-icon-small" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="category-info-small">
+                    <h5>Mobile</h5>
+                    <span>8 Projects</span>
+                </div>
+            </div>
+            <div class="category-item">
+                <div class="category-icon-small" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="category-info-small">
+                    <h5>AI/ML</h5>
+                    <span>12 Projects</span>
+                </div>
+            </div>
+            <div class="category-item">
+                <div class="category-icon-small" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <div class="category-info-small">
+                    <h5>Cloud</h5>
+                    <span>6 Projects</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Analytics -->
+    <div class="section-card fade-in analytics-quick">
+        <h2 class="section-title">Quick Stats</h2>
+        <div class="analytics-compact">
+            <div class="analytics-item">
+                <i class="fas fa-eye" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);"></i>
+                <div class="analytics-info">
+                    <span class="analytics-value">128K</span>
+                    <span class="analytics-label">Page Views</span>
+                </div>
+            </div>
+            <div class="analytics-item">
+                <i class="fas fa-users" style="background: linear-gradient(135deg, #10b981, #059669);"></i>
+                <div class="analytics-info">
+                    <span class="analytics-value">45.9K</span>
+                    <span class="analytics-label">Visitors</span>
+                </div>
+            </div>
+            <div class="analytics-item">
+                <i class="fas fa-download" style="background: linear-gradient(135deg, #f59e0b, #d97706);"></i>
+                <div class="analytics-info">
+                    <span class="analytics-value">1,234</span>
+                    <span class="analytics-label">Downloads</span>
+                </div>
+            </div>
+            <div class="analytics-item">
+                <i class="fas fa-envelope" style="background: linear-gradient(135deg, #ec4899, #db2777);"></i>
+                <div class="analytics-info">
+                    <span class="analytics-value">89</span>
+                    <span class="analytics-label">Messages</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dev.js' %}"></script>
+{% endblock %}

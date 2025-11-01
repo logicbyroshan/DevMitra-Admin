@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Details - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/manage-details.css' %}">
+{% endblock %}
+
+{% block nav_details %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">Manage Details</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<!-- Personal Information Section -->
+<section class="section-card fade-in">
+    <div class="section-header">
+        <h2><i class="fas fa-user"></i> Personal Information</h2>
+    </div>
+    <form class="details-form" id="personal-info-form">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="personal_info">
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Full Name <span class="required">*</span></label>
+                <input type="text" class="form-input" name="full_name" value="{{ profile.full_name }}" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address <span class="required">*</span></label>
+                <input type="email" class="form-input" name="email" value="{{ profile.email }}" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-input" name="phone" value="{{ profile.phone }}" placeholder="Enter your phone">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-input" name="location" value="{{ profile.location }}" placeholder="Enter your location">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Professional Title <span class="required">*</span></label>
+            <input type="text" class="form-input" name="title" value="{{ profile.title }}" placeholder="Enter your professional title" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Bio / About Me</label>
+            <textarea class="form-textarea" name="bio" rows="5" placeholder="Write a brief description about yourself">{{ profile.bio }}</textarea>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-secondary">Cancel</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+    </form>
+</section>
+
+<!-- Profile Image Section -->
+<section class="section-card fade-in" style="animation-delay: 0.1s;">
+    <div class="section-header">
+        <h2><i class="fas fa-image"></i> Profile Image</h2>
+    </div>
+    <div class="image-upload-section">
+        <div class="current-image">
+            {% if profile.profile_image %}
+                <img src="{{ profile.profile_image.url }}" alt="Profile Picture" id="profile-preview">
+            {% else %}
+                <img src="https://via.placeholder.com/200" alt="Profile Picture" id="profile-preview">
+            {% endif %}
+        </div>
+        <div class="upload-controls">
+            <p class="upload-info">Upload a professional profile picture. Recommended size: 400x400px</p>
+            <form id="profile-image-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="profile_image">
+                <input type="file" id="profile-upload" name="profile_image" accept="image/*" style="display: none;">
+            </form>
+            <div class="upload-buttons">
+                <button type="button" class="btn-primary" onclick="document.getElementById('profile-upload').click()">
+                    <i class="fas fa-upload"></i> Upload New Photo
+                </button>
+                <button type="button" class="btn-secondary" id="delete-profile-image">
+                    <i class="fas fa-trash-alt"></i> Remove Photo
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Links Section -->
+<section class="section-card fade-in" style="animation-delay: 0.2s;">
+    <div class="section-header">
+        <h2><i class="fas fa-share-alt"></i> Social Links</h2>
+    </div>
+    <form class="details-form" id="social-links-form">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="social_links">
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label"><i class="fab fa-github"></i> GitHub</label>
+                <input type="url" class="form-input" name="github" value="{{ profile.github }}" placeholder="GitHub profile URL">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fab fa-linkedin"></i> LinkedIn</label>
+                <input type="url" class="form-input" name="linkedin" value="{{ profile.linkedin }}" placeholder="LinkedIn profile URL">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fab fa-twitter"></i> Twitter</label>
+                <input type="url" class="form-input" name="twitter" value="{{ profile.twitter }}" placeholder="Twitter profile URL">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fab fa-instagram"></i> Instagram</label>
+                <input type="url" class="form-input" name="instagram" value="{{ profile.instagram }}" placeholder="Instagram profile URL">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fab fa-youtube"></i> YouTube</label>
+                <input type="url" class="form-input" name="youtube" value="{{ profile.youtube }}" placeholder="YouTube channel URL">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-globe"></i> Portfolio Website</label>
+                <input type="url" class="form-input" name="website" value="{{ profile.website }}" placeholder="Portfolio website URL">
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-secondary">Cancel</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Links</button>
+        </div>
+    </form>
+</section>
+
+<!-- Contact Information Section -->
+<section class="section-card fade-in" style="animation-delay: 0.3s;">
+    <div class="section-header">
+        <h2><i class="fas fa-address-book"></i> Contact Information</h2>
+    </div>
+    <form class="details-form" id="contact-form">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="contact_info">
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-envelope"></i> Contact Email</label>
+                <input type="email" class="form-input" name="contact_email" value="{{ profile.contact_email }}" placeholder="Public contact email">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-phone"></i> Contact Phone</label>
+                <input type="tel" class="form-input" name="contact_phone" value="{{ profile.contact_phone }}" placeholder="Public contact phone">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-map-marker-alt"></i> Address</label>
+                <input type="text" class="form-input" name="address" value="{{ profile.address }}" placeholder="Street address">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-city"></i> City</label>
+                <input type="text" class="form-input" name="city" value="{{ profile.city }}" placeholder="City">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-flag"></i> State/Region</label>
+                <input type="text" class="form-input" name="state" value="{{ profile.state }}" placeholder="State or region">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-globe-americas"></i> Country</label>
+                <input type="text" class="form-input" name="country" value="{{ profile.country }}" placeholder="Country">
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-secondary">Cancel</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Contact Info</button>
+        </div>
+    </form>
+</section>
+
+<!-- Resume & Documents Section -->
+<section class="section-card fade-in" style="animation-delay: 0.4s;">
+    <div class="section-header">
+        <h2><i class="fas fa-file-pdf"></i> Resume & Documents</h2>
+    </div>
+    <div class="upload-section">
+        <div class="upload-card">
+            <div class="upload-icon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            <h4>Resume / CV</h4>
+            {% if profile.resume %}
+                <p class="file-name">{{ profile.resume.name }}</p>
+                <p class="file-size">{{ profile.resume.size|filesizeformat }}</p>
+                <div class="upload-actions">
+                    <form id="upload-resume-form" enctype="multipart/form-data" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="upload_resume">
+                        <input type="file" id="resume-upload" name="resume" accept=".pdf,.doc,.docx" style="display: none;">
+                        <button type="button" class="btn-primary btn-sm" onclick="document.getElementById('resume-upload').click()">
+                            <i class="fas fa-upload"></i> Replace
+                        </button>
+                    </form>
+                    <button type="button" class="btn-danger btn-sm" id="delete-resume"><i class="fas fa-trash-alt"></i> Delete</button>
+                </div>
+            {% else %}
+                <p class="file-name">No resume uploaded</p>
+                <div class="upload-actions">
+                    <form id="upload-resume-form" enctype="multipart/form-data" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="upload_resume">
+                        <input type="file" id="resume-upload" name="resume" accept=".pdf,.doc,.docx" style="display: none;">
+                        <button type="button" class="btn-primary btn-sm" onclick="document.getElementById('resume-upload').click()">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+        <div class="upload-card">
+            <div class="upload-icon">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <h4>Cover Letter</h4>
+            {% if profile.cover_letter %}
+                <p class="file-name">{{ profile.cover_letter.name }}</p>
+                <p class="file-size">{{ profile.cover_letter.size|filesizeformat }}</p>
+                <div class="upload-actions">
+                    <form id="upload-cover-letter-form" enctype="multipart/form-data" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="upload_cover_letter">
+                        <input type="file" id="cover-letter-upload" name="cover_letter" accept=".pdf,.doc,.docx" style="display: none;">
+                        <button type="button" class="btn-primary btn-sm" onclick="document.getElementById('cover-letter-upload').click()">
+                            <i class="fas fa-upload"></i> Replace
+                        </button>
+                    </form>
+                    <button type="button" class="btn-danger btn-sm" id="delete-cover-letter"><i class="fas fa-trash-alt"></i> Delete</button>
+                </div>
+            {% else %}
+                <p class="file-name">No cover letter uploaded</p>
+                <div class="upload-actions">
+                    <form id="upload-cover-letter-form" enctype="multipart/form-data" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="upload_cover_letter">
+                        <input type="file" id="cover-letter-upload" name="cover_letter" accept=".pdf,.doc,.docx" style="display: none;">
+                        <button type="button" class="btn-primary btn-sm" onclick="document.getElementById('cover-letter-upload').click()">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Video Resume Section -->
+    <form class="form-group" id="video-resume-form" style="margin-top: 2rem;">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="video_resume">
+        <label class="form-label">
+            <i class="fab fa-youtube"></i> Video Resume (YouTube Link)
+        </label>
+        <input type="url" class="form-input" id="video_resume" name="video_resume" 
+               value="{{ profile.video_resume }}" 
+               placeholder="https://www.youtube.com/watch?v=...">
+        <small style="color: #6b7280; font-size: 0.875rem; display: block; margin-top: 0.5rem;">
+            <i class="fas fa-info-circle"></i> Add a YouTube link to your video resume or introduction
+        </small>
+        <button type="submit" class="btn-primary" style="margin-top: 1rem;"><i class="fas fa-save"></i> Save Video Link</button>
+    </form>
+</section>
+
+<!-- SEO & Meta Information Section -->
+<section class="section-card fade-in" style="animation-delay: 0.5s;">
+    <div class="section-header">
+        <h2><i class="fas fa-search"></i> SEO & Meta Information</h2>
+    </div>
+    <form class="details-form" id="seo-form">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="seo">
+        <div class="form-group">
+            <label class="form-label">Meta Title</label>
+            <input type="text" class="form-input" name="meta_title" value="{{ profile.meta_title }}" placeholder="SEO title for your portfolio" maxlength="60">
+            <span class="char-count">{{ profile.meta_title|length }}/60 characters</span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Meta Description</label>
+            <textarea class="form-textarea" name="meta_description" rows="3" placeholder="SEO description for your portfolio" maxlength="160">{{ profile.meta_description }}</textarea>
+            <span class="char-count">{{ profile.meta_description|length }}/160 characters</span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Meta Keywords</label>
+            <input type="text" class="form-input" name="meta_keywords" value="{{ profile.meta_keywords }}" placeholder="Comma-separated keywords">
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-secondary">Cancel</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save SEO Settings</button>
+        </div>
+    </form>
+</section>
+
+<!-- Availability & Preferences Section -->
+<section class="section-card fade-in" style="animation-delay: 0.6s;">
+    <div class="section-header">
+        <h2><i class="fas fa-calendar-check"></i> Availability & Preferences</h2>
+    </div>
+    <form class="details-form" id="preferences-form">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="preferences">
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Current Status</label>
+                <select class="form-input" name="status">
+                    <option value="available" {% if profile.status == 'available' %}selected{% endif %}>Available for Work</option>
+                    <option value="busy" {% if profile.status == 'busy' %}selected{% endif %}>Busy</option>
+                    <option value="not-looking" {% if profile.status == 'not-looking' %}selected{% endif %}>Not Looking</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Work Type Preference</label>
+                <select class="form-input" name="work_type">
+                    <option value="remote" {% if profile.work_type == 'remote' %}selected{% endif %}>Remote</option>
+                    <option value="hybrid" {% if profile.work_type == 'hybrid' %}selected{% endif %}>Hybrid</option>
+                    <option value="onsite" {% if profile.work_type == 'onsite' %}selected{% endif %}>On-site</option>
+                    <option value="flexible" {% if profile.work_type == 'flexible' %}selected{% endif %}>Flexible</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Hourly Rate (USD)</label>
+                <input type="number" class="form-input" name="hourly_rate" value="{{ profile.hourly_rate }}" placeholder="Your hourly rate">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Years of Experience</label>
+                <input type="number" class="form-input" name="experience_years" value="{{ profile.experience_years }}" placeholder="Years">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">
+                <input type="checkbox" name="open_to_opportunities" {% if profile.open_to_opportunities %}checked{% endif %}> Open to new opportunities
+            </label>
+        </div>
+        <div class="form-group">
+            <label class="form-label">
+                <input type="checkbox" name="available_for_freelance" {% if profile.available_for_freelance %}checked{% endif %}> Available for freelance projects
+            </label>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-secondary">Cancel</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Preferences</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/manage-details.js' %}"></script>
+{% endblock %}

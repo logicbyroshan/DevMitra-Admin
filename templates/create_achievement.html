@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Achievement - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create-achievement.css' %}">
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
+
+{% block nav_achievements %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">Create New Achievement</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<form class="create-form" id="create-achievement-form">
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Achievement Information</h2>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Category *</label>
+                <select class="form-input" required>
+                    <option value="">Select Category</option>
+                    <option value="certification">Certification</option>
+                    <option value="award">Award</option>
+                    <option value="competition">Competition</option>
+                    <option value="recognition">Recognition</option>
+                    <option value="publication">Publication</option>
+                    <option value="patent">Patent</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Achievement Date *</label>
+                <input type="month" class="form-input" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Achievement Title *</label>
+            <input type="text" class="form-input" placeholder="e.g., AWS Certified Solutions Architect" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Issuing Organization *</label>
+            <input type="text" class="form-input" placeholder="e.g., Amazon Web Services" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Short Description *</label>
+            <textarea class="form-textarea" rows="3" placeholder="Brief description of the achievement" required></textarea>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Achievement Icon/Badge</h2>
+        </div>
+        <div class="icon-selector">
+            <div class="icon-method">
+                <label class="radio-label">
+                    <input type="radio" name="icon-method" value="upload" checked>
+                    <span>Upload Badge/Icon</span>
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="icon-method" value="fontawesome">
+                    <span>Use Icon</span>
+                </label>
+            </div>
+            <div class="icon-upload-section" id="icon-upload-section">
+                <div class="file-upload-area" id="icon-upload">
+                    <i class="fas fa-award"></i>
+                    <p>Click to upload achievement badge</p>
+                    <span class="file-info">PNG, JPG, SVG (Max 2MB)</span>
+                    <input type="file" accept="image/*" hidden>
+                </div>
+                <div class="preview-container" id="icon-preview"></div>
+            </div>
+            <div class="icon-fontawesome-section" id="icon-fontawesome-section" style="display: none;">
+                <div class="popular-icons">
+                    <p class="section-subtitle">Select Icon:</p>
+                    <div class="icon-grid">
+                        <div class="icon-option" data-icon="fas fa-trophy"><i class="fas fa-trophy"></i></div>
+                        <div class="icon-option" data-icon="fas fa-medal"><i class="fas fa-medal"></i></div>
+                        <div class="icon-option" data-icon="fas fa-award"><i class="fas fa-award"></i></div>
+                        <div class="icon-option" data-icon="fas fa-certificate"><i class="fas fa-certificate"></i></div>
+                        <div class="icon-option" data-icon="fas fa-star"><i class="fas fa-star"></i></div>
+                        <div class="icon-option" data-icon="fas fa-crown"><i class="fas fa-crown"></i></div>
+                        <div class="icon-option" data-icon="fas fa-gem"><i class="fas fa-gem"></i></div>
+                        <div class="icon-option" data-icon="fas fa-ribbon"><i class="fas fa-ribbon"></i></div>
+                    </div>
+                </div>
+                <div class="selected-icon-preview" id="selected-icon-preview">
+                    <i class="fas fa-trophy"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Credential Information</h2>
+        </div>
+        <div class="credential-method">
+            <label class="radio-label">
+                <input type="radio" name="credential-method" value="file" checked>
+                <span>Upload Certificate/Document</span>
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="credential-method" value="link">
+                <span>Credential Link/URL</span>
+            </label>
+        </div>
+        <div class="credential-file-section" id="credential-file-section">
+            <div class="file-upload-area" id="credential-upload">
+                <i class="fas fa-file-upload"></i>
+                <p>Click to upload credential document</p>
+                <span class="file-info">PDF, JPG, PNG (Max 5MB)</span>
+                <input type="file" accept=".pdf,image/*" hidden>
+            </div>
+            <div class="preview-container" id="credential-preview"></div>
+        </div>
+        <div class="credential-link-section" id="credential-link-section" style="display: none;">
+            <div class="form-group">
+                <label class="form-label">Credential URL</label>
+                <input type="url" class="form-input" placeholder="https://credentials.example.com/verify/123456">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Credential ID (Optional)</label>
+                <input type="text" class="form-input" placeholder="e.g., CERT-123456">
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Additional Information</h2>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Expiration Date (if applicable)</label>
+                <input type="month" class="form-input">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="no-expiration"> No expiration
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Related Link</label>
+                <input type="url" class="form-input" placeholder="https://example.com/achievement">
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Detailed Description</h2>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Full Description</label>
+            <textarea id="achievement-details" class="tinymce-editor"></textarea>
+        </div>
+    </section>
+
+    <div class="form-actions">
+        <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
+        <button type="button" class="btn-secondary">Save as Draft</button>
+        <button type="submit" class="btn-primary">Publish Achievement</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/create-achievement.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,41 @@
+/* ===== Manage Projects Specific Styles ===== */
+
+.project-meta {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.tech-stack {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.tech-stack i {
+    color: var(--accent-blue);
+}
+
+/* Draft Project Styles */
+.blog-card.draft {
+    opacity: 0.7;
+    background: rgba(107, 114, 128, 0.05);
+}
+
+.blog-card.draft .card-image img {
+    filter: grayscale(30%);
+}
+
+.status-badge.status-draft {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}

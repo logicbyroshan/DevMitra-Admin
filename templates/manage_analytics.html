@@ -1,0 +1,447 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Analytics Dashboard - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/manage-analytics.css' %}">
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block nav_analytics %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">Analytics Dashboard</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<!-- Quick Stats Overview -->
+<section class="stats-overview">
+    <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
+            <i class="fas fa-eye"></i>
+        </div>
+        <div class="stat-content">
+            <p class="stat-label">Total Page Views</p>
+            <h3 class="stat-value">128,453</h3>
+            <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 12.5% vs last month</span>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-content">
+            <p class="stat-label">Unique Visitors</p>
+            <h3 class="stat-value">45,892</h3>
+            <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 8.3% vs last month</span>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+            <p class="stat-label">Avg. Session Duration</p>
+            <h3 class="stat-value">3m 42s</h3>
+            <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 5.2% vs last month</span>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+            <i class="fas fa-percentage"></i>
+        </div>
+        <div class="stat-content">
+            <p class="stat-label">Bounce Rate</p>
+            <h3 class="stat-value">32.8%</h3>
+            <span class="stat-change negative"><i class="fas fa-arrow-down"></i> 2.1% vs last month</span>
+        </div>
+    </div>
+</section>
+
+<!-- Charts Row -->
+<div class="charts-row">
+    <!-- Traffic Chart -->
+    <section class="section-card chart-card">
+        <div class="card-header">
+            <h2 class="section-title">Traffic Overview</h2>
+            <div class="time-filter">
+                <button class="filter-btn active" data-period="7d">7 Days</button>
+                <button class="filter-btn" data-period="30d">30 Days</button>
+                <button class="filter-btn" data-period="90d">90 Days</button>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="trafficChart"></canvas>
+        </div>
+    </section>
+
+    <!-- Device Distribution -->
+    <section class="section-card chart-card">
+        <div class="card-header">
+            <h2 class="section-title">Device Distribution</h2>
+        </div>
+        <div class="chart-container">
+            <canvas id="deviceChart"></canvas>
+        </div>
+        <div class="device-stats">
+            <div class="device-stat">
+                <span class="device-label"><i class="fas fa-desktop"></i> Desktop</span>
+                <span class="device-value">52.3%</span>
+            </div>
+            <div class="device-stat">
+                <span class="device-label"><i class="fas fa-mobile-alt"></i> Mobile</span>
+                <span class="device-value">38.7%</span>
+            </div>
+            <div class="device-stat">
+                <span class="device-label"><i class="fas fa-tablet-alt"></i> Tablet</span>
+                <span class="device-value">9.0%</span>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Second Charts Row -->
+<div class="charts-row">
+    <!-- Geographic Distribution -->
+    <section class="section-card chart-card">
+        <div class="card-header">
+            <h2 class="section-title">Top Countries</h2>
+        </div>
+        <div class="countries-list">
+            <div class="country-item">
+                <div class="country-info">
+                    <span class="country-flag">🇺🇸</span>
+                    <span class="country-name">United States</span>
+                </div>
+                <div class="country-stats">
+                    <span class="country-visitors">18,542</span>
+                    <div class="country-bar">
+                        <div class="country-bar-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="country-item">
+                <div class="country-info">
+                    <span class="country-flag">🇬🇧</span>
+                    <span class="country-name">United Kingdom</span>
+                </div>
+                <div class="country-stats">
+                    <span class="country-visitors">12,234</span>
+                    <div class="country-bar">
+                        <div class="country-bar-fill" style="width: 65%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="country-item">
+                <div class="country-info">
+                    <span class="country-flag">🇨🇦</span>
+                    <span class="country-name">Canada</span>
+                </div>
+                <div class="country-stats">
+                    <span class="country-visitors">8,721</span>
+                    <div class="country-bar">
+                        <div class="country-bar-fill" style="width: 48%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="country-item">
+                <div class="country-info">
+                    <span class="country-flag">🇩🇪</span>
+                    <span class="country-name">Germany</span>
+                </div>
+                <div class="country-stats">
+                    <span class="country-visitors">6,892</span>
+                    <div class="country-bar">
+                        <div class="country-bar-fill" style="width: 38%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="country-item">
+                <div class="country-info">
+                    <span class="country-flag">🇦🇺</span>
+                    <span class="country-name">Australia</span>
+                </div>
+                <div class="country-stats">
+                    <span class="country-visitors">5,421</span>
+                    <div class="country-bar">
+                        <div class="country-bar-fill" style="width: 30%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Browser Distribution -->
+    <section class="section-card chart-card">
+        <div class="card-header">
+            <h2 class="section-title">Browser Usage</h2>
+        </div>
+        <div class="chart-container">
+            <canvas id="browserChart"></canvas>
+        </div>
+    </section>
+</div>
+
+<!-- Portfolio Stats -->
+<div class="charts-row">
+    <!-- Project Views -->
+    <section class="section-card chart-card">
+        <div class="card-header">
+            <h2 class="section-title">Most Viewed Projects</h2>
+        </div>
+        <div class="projects-list">
+            <div class="project-item">
+                <div class="project-rank">1</div>
+                <div class="project-info">
+                    <h4>E-Commerce Platform</h4>
+                    <p class="project-tech">React, Node.js, MongoDB</p>
+                </div>
+                <div class="project-stats">
+                    <span class="project-views"><i class="fas fa-eye"></i> 8,234</span>
+                    <span class="project-clicks"><i class="fas fa-mouse-pointer"></i> 1,245</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <div class="project-rank">2</div>
+                <div class="project-info">
+                    <h4>AI Chatbot Assistant</h4>
+                    <p class="project-tech">Python, TensorFlow, Flask</p>
+                </div>
+                <div class="project-stats">
+                    <span class="project-views"><i class="fas fa-eye"></i> 6,892</span>
+                    <span class="project-clicks"><i class="fas fa-mouse-pointer"></i> 987</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <div class="project-rank">3</div>
+                <div class="project-info">
+                    <h4>Mobile Banking App</h4>
+                    <p class="project-tech">React Native, Firebase</p>
+                </div>
+                <div class="project-stats">
+                    <span class="project-views"><i class="fas fa-eye"></i> 5,621</span>
+                    <span class="project-clicks"><i class="fas fa-mouse-pointer"></i> 734</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Interest -->
+    <section class="section-card chart-card">
+        <div class="card-header">
+            <h2 class="section-title">Skills Interest Breakdown</h2>
+        </div>
+        <div class="chart-container">
+            <canvas id="skillsChart"></canvas>
+        </div>
+    </section>
+</div>
+
+<!-- Engagement Metrics -->
+<section class="section-card">
+    <div class="card-header">
+        <h2 class="section-title">Engagement Metrics</h2>
+    </div>
+    <div class="engagement-grid">
+        <div class="engagement-card">
+            <div class="engagement-icon">
+                <i class="fas fa-download"></i>
+            </div>
+            <h4>Resume Downloads</h4>
+            <p class="engagement-value">1,234</p>
+            <span class="engagement-period">This month</span>
+        </div>
+        <div class="engagement-card">
+            <div class="engagement-icon">
+                <i class="fas fa-share-alt"></i>
+            </div>
+            <h4>Social Shares</h4>
+            <p class="engagement-value">456</p>
+            <span class="engagement-period">This month</span>
+        </div>
+        <div class="engagement-card">
+            <div class="engagement-icon">
+                <i class="fab fa-github"></i>
+            </div>
+            <h4>GitHub Clicks</h4>
+            <p class="engagement-value">2,345</p>
+            <span class="engagement-period">This month</span>
+        </div>
+        <div class="engagement-card">
+            <div class="engagement-icon">
+                <i class="fab fa-linkedin"></i>
+            </div>
+            <h4>LinkedIn Visits</h4>
+            <p class="engagement-value">1,876</p>
+            <span class="engagement-period">This month</span>
+        </div>
+        <div class="engagement-card">
+            <div class="engagement-icon">
+                <i class="fas fa-file-code"></i>
+            </div>
+            <h4>Code Snippets Viewed</h4>
+            <p class="engagement-value">3,421</p>
+            <span class="engagement-period">This month</span>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Responses Section -->
+<section class="section-card">
+    <div class="card-header">
+        <h2 class="section-title">Contact Responses</h2>
+        <a href="{% url 'list_contact_responses' %}" class="view-all-link">
+            View All <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+    
+    <div class="stats-row">
+        <div class="stat-box">
+            <div class="stat-icon-small" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="stat-info">
+                <p class="stat-label-small">Total Responses</p>
+                <h3 class="stat-value-small">89</h3>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon-small" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="stat-info">
+                <p class="stat-label-small">Urgent Responses</p>
+                <h3 class="stat-value-small">12</h3>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon-small" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <p class="stat-label-small">Responded</p>
+                <h3 class="stat-value-small">67</h3>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon-small" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <p class="stat-label-small">Pending</p>
+                <h3 class="stat-value-small">22</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="responses-preview">
+        <!-- Urgent Response -->
+        <div class="response-card urgent">
+            <div class="response-header">
+                <div class="response-meta">
+                    <h4>Sarah Johnson</h4>
+                    <span class="response-badge urgent-badge"><i class="fas fa-exclamation-circle"></i> Urgent</span>
+                </div>
+                <span class="response-time">2 hours ago</span>
+            </div>
+            <p class="response-email">sarah.johnson@company.com</p>
+            <p class="response-message">Hi, I'm interested in hiring you for a urgent project. We need a full-stack developer ASAP. Please respond at your earliest convenience.</p>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
+            </div>
+        </div>
+
+        <!-- Normal Response -->
+        <div class="response-card">
+            <div class="response-header">
+                <div class="response-meta">
+                    <h4>Michael Chen</h4>
+                    <span class="response-badge normal-badge"><i class="fas fa-info-circle"></i> Normal</span>
+                </div>
+                <span class="response-time">5 hours ago</span>
+            </div>
+            <p class="response-email">m.chen@techcorp.io</p>
+            <p class="response-message">Great portfolio! I'd love to discuss potential collaboration opportunities. Let me know if you're available for a call next week.</p>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
+            </div>
+        </div>
+
+        <!-- Normal Response -->
+        <div class="response-card">
+            <div class="response-header">
+                <div class="response-meta">
+                    <h4>Emily Rodriguez</h4>
+                    <span class="response-badge normal-badge"><i class="fas fa-info-circle"></i> Normal</span>
+                </div>
+                <span class="response-time">1 day ago</span>
+            </div>
+            <p class="response-email">emily.r@startup.com</p>
+            <p class="response-message">Impressive work on the AI Chatbot project! Would you be open to discussing how you built it?</p>
+            <div class="response-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Real-time Activity -->
+<section class="section-card">
+    <div class="card-header">
+        <h2 class="section-title">Recent Activity</h2>
+    </div>
+    <div class="activity-feed">
+        <div class="activity-item">
+            <div class="activity-time">2 min ago</div>
+            <div class="activity-content">
+                <i class="fas fa-eye"></i>
+                <span>Visitor from <strong>San Francisco, USA</strong> viewed <strong>E-Commerce Platform</strong></span>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-time">15 min ago</div>
+            <div class="activity-content">
+                <i class="fas fa-download"></i>
+                <span>Resume downloaded by visitor from <strong>London, UK</strong></span>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-time">32 min ago</div>
+            <div class="activity-content">
+                <i class="fas fa-envelope"></i>
+                <span>New contact form submission from <strong>John Doe</strong></span>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-time">1 hour ago</div>
+            <div class="activity-content">
+                <i class="fab fa-github"></i>
+                <span>GitHub repository link clicked for <strong>AI Chatbot</strong> project</span>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-time">2 hours ago</div>
+            <div class="activity-content">
+                <i class="fas fa-share-alt"></i>
+                <span>Portfolio shared on <strong>Twitter</strong> by visitor</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/manage-analytics.js' %}"></script>
+{% endblock %}

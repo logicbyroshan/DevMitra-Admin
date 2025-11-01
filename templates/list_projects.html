@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Projects - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/manage-projects.css' %}">
+<link rel="stylesheet" href="{% static 'css/view-all-projects.css' %}">
+{% endblock %}
+
+{% block nav_projects %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">All Projects</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<div class="page-actions-header">
+    <a href="{% url 'create_project' %}" class="btn-primary">
+        <i class="fas fa-plus-circle"></i> Create New Project
+    </a>
+</div>
+
+<div class="filter-bar section-card">
+    <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" id="search-input" placeholder="Search by title or category...">
+    </div>
+    <div class="filter-controls">
+        <div class="filter-group">
+            <a href="{% url 'list_projects' %}" class="filter-btn {% if current_filter == 'all' %}active{% endif %}">All <span class="count">({{ total_count }})</span></a>
+            <a href="{% url 'list_projects' %}?filter=active" class="filter-btn {% if current_filter == 'active' %}active{% endif %}">Active <span class="count">({{ active_count }})</span></a>
+            <a href="{% url 'list_projects' %}?filter=completed" class="filter-btn {% if current_filter == 'completed' %}active{% endif %}">Completed <span class="count">({{ completed_count }})</span></a>
+            <a href="{% url 'list_projects' %}?filter=on-hold" class="filter-btn {% if current_filter == 'on-hold' %}active{% endif %}">On Hold <span class="count">({{ on_hold_count }})</span></a>
+            <a href="{% url 'list_projects' %}?filter=draft" class="filter-btn {% if current_filter == 'draft' %}active{% endif %}">Draft <span class="count">({{ draft_count }})</span></a>
+        </div>
+        <div class="sort-group">
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="title-az">Title (A-Z)</option>
+                <option value="title-za">Title (Z-A)</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="blog-grid" id="all-projects-grid">
+    {% for project in projects %}
+    <div class="blog-card fade-in" data-status="{{ project.status }}" data-title="{{ project.title }}" data-date="{{ project.created_at|date:'Y-m-d' }}" data-project-id="{{ project.id }}">
+        <div class="card-image">
+            {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}">
+            {% else %}
+                <img src="https://via.placeholder.com/400x250/2563eb/ffffff?text={{ project.title|urlencode }}" alt="{{ project.title }}">
+            {% endif %}
+        </div>
+        <div class="card-content">
+            <span class="card-category">{{ project.category.name|default:"Uncategorized" }}</span>
+            <h4 class="card-title">{{ project.title }}</h4>
+            <p class="card-excerpt">{{ project.short_description|default:project.description|truncatewords:20 }}</p>
+            <div class="project-meta">
+                <span class="tech-stack"><i class="fas fa-code"></i> {{ project.technologies }}</span>
+            </div>
+            <span class="status-badge status-{{ project.status }}">{{ project.get_status_display }}</span>
+        </div>
+        <div class="card-actions">
+            <label class="toggle-switch">
+                <input type="checkbox" class="project-toggle" data-project-id="{{ project.id }}" {% if project.is_active %}checked{% endif %}>
+                <span class="slider"></span>
+            </label>
+            <div class="action-buttons">
+                <a href="{% url 'edit_project' project.id %}" class="btn-icon btn-edit" title="Edit Project">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                </a>
+                <button class="btn-icon btn-delete" data-project-id="{{ project.id }}" data-project-title="{{ project.title }}" title="Delete Project">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <p>No projects found{% if current_filter != 'all' %} with filter "{{ current_filter }}"{% endif %}.</p>
+        <a href="{% url 'create_project' %}" class="btn-primary">
+            <i class="fas fa-plus-circle"></i> Create Project
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="no-results" id="no-results" style="display: none;">
+    <i class="fas fa-search"></i>
+    <p>No projects found matching your criteria.</p>
+</div>
+{% endblock %}
+
+{% block modals %}
+<div class="modal-overlay" id="delete-confirm-modal">
+    <div class="modal-content">
+        <div class="modal-header"><h2>Confirm Deletion</h2></div>
+        <div class="modal-body"><p>Are you sure you want to permanently delete this project? This action cannot be undone.</p></div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="modal-cancel-btn">Cancel</button>
+            <button type="button" class="btn-danger" id="modal-confirm-btn">Delete</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/view-all-projects.js' %}"></script>
+{% endblock %}
+

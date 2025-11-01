@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if is_edit %}Edit{% else %}Create{% endif %} Project - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create-project.css' %}">
+{% endblock %}
+
+{% block nav_projects %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">{% if is_edit %}Edit{% else %}Create New{% endif %} Project</h1>
+{% endblock %}
+
+{% block content %}
+<div class="back-navigation">
+    <a href="{% url 'manage_projects' %}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back to Projects
+    </a>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="create-form" id="create-project-form">
+    {% csrf_token %}
+    
+    <!-- Basic Information Section -->
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-folder"></i> Category *
+                </label>
+                {{ form.category }}
+                {% if form.category.errors %}
+                    <span class="error-message">{{ form.category.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-tasks"></i> Project Status *
+                </label>
+                {{ form.status }}
+                {% if form.status.errors %}
+                    <span class="error-message">{{ form.status.errors.0 }}</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-heading"></i> Project Title *
+                </label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <span class="error-message">{{ form.title.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-tag"></i> Project Name
+                </label>
+                {{ form.project_name }}
+                <small class="form-hint">Display name for the project (optional)</small>
+                {% if form.project_name.errors %}
+                    <span class="error-message">{{ form.project_name.errors.0 }}</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-file-alt"></i> Full Description *
+            </label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <span class="error-message">{{ form.description.errors.0 }}</span>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Project Media Section -->
+    <section class="section-card fade-in" style="animation-delay: 0.1s;">
+        <div class="section-header">
+            <h2><i class="fas fa-images"></i> Project Media</h2>
+        </div>
+        
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-image"></i> Project Thumbnail
+            </label>
+            <small class="form-hint">Recommended ratio: 16:9 (e.g., 1920x1080, 1280x720)</small>
+            <div class="file-upload-area" id="thumbnail-upload-area">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Click to upload or drag and drop thumbnail</p>
+                <span class="file-info">PNG, JPG, WEBP (Max 5MB)</span>
+            </div>
+            <div style="display: none;">
+                {{ form.thumbnail }}
+            </div>
+            <div class="preview-container" id="thumbnail-preview">
+                {% if project.thumbnail %}
+                <div class="preview-image">
+                    <img src="{{ project.thumbnail.url }}" alt="Current Thumbnail">
+                    <button type="button" class="preview-remove" onclick="clearThumbnail()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+            {% if form.thumbnail.errors %}
+                <span class="error-message">{{ form.thumbnail.errors.0 }}</span>
+            {% endif %}
+        </div>
+        
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-images"></i> Project Screenshots
+            </label>
+            <div class="file-upload-area" id="screenshots-upload-area">
+                <i class="fas fa-images"></i>
+                <p>Click to upload multiple screenshots</p>
+                <span class="file-info">PNG, JPG, WEBP (Max 5MB each)</span>
+            </div>
+            <input type="file" id="screenshots-input" accept="image/*" multiple style="display: none;">
+            <div class="preview-grid" id="screenshots-preview"></div>
+            {% if project.screenshots.all %}
+                <div class="existing-screenshots">
+                    <p>Existing Screenshots:</p>
+                    <div class="preview-grid">
+                        {% for screenshot in project.screenshots.all %}
+                        <div class="preview-item" data-screenshot-id="{{ screenshot.id }}">
+                            <img src="{{ screenshot.image.url }}" alt="Screenshot">
+                            <button type="button" class="preview-remove" data-action="delete-screenshot" data-id="{{ screenshot.id }}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Technology & Links Section -->
+    <section class="section-card fade-in" style="animation-delay: 0.2s;">
+        <div class="section-header">
+            <h2><i class="fas fa-code"></i> Technology & Links</h2>
+        </div>
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label class="form-label">
+                    <i class="fas fa-laptop-code"></i> Technologies Used *
+                </label>
+                {{ form.technologies }}
+                <small class="form-hint">Enter comma-separated technologies (e.g., React, Node.js, MongoDB)</small>
+                {% if form.technologies.errors %}
+                    <span class="error-message">{{ form.technologies.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fab fa-github"></i> GitHub Repository URL
+                </label>
+                {{ form.github_url }}
+                {% if form.github_url.errors %}
+                    <span class="error-message">{{ form.github_url.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-globe"></i> Live Project URL
+                </label>
+                {{ form.live_url }}
+                {% if form.live_url.errors %}
+                    <span class="error-message">{{ form.live_url.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-play-circle"></i> Demo URL
+                </label>
+                {{ form.demo_url }}
+                {% if form.demo_url.errors %}
+                    <span class="error-message">{{ form.demo_url.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-link"></i> Other Link
+                </label>
+                {{ form.other_url }}
+                {% if form.other_url.errors %}
+                    <span class="error-message">{{ form.other_url.errors.0 }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Details Section -->
+    <section class="section-card fade-in" style="animation-delay: 0.2s;">
+        <div class="section-header">
+            <h2><i class="fas fa-calendar-alt"></i> Project Details</h2>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="far fa-calendar"></i> Start Date
+                </label>
+                {{ form.start_date }}
+                {% if form.start_date.errors %}
+                    <span class="error-message">{{ form.start_date.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="far fa-calendar-check"></i> End Date
+                </label>
+                {{ form.end_date }}
+                {% if form.end_date.errors %}
+                    <span class="error-message">{{ form.end_date.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-user-tie"></i> Client/Company
+                </label>
+                {{ form.client }}
+                {% if form.client.errors %}
+                    <span class="error-message">{{ form.client.errors.0 }}</span>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-sort-numeric-down"></i> Display Order
+                </label>
+                {{ form.order }}
+                <small class="form-hint">Higher numbers appear first</small>
+                {% if form.order.errors %}
+                    <span class="error-message">{{ form.order.errors.0 }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Documentation Section -->
+    <section class="section-card fade-in" style="animation-delay: 0.3s;">
+        <div class="section-header">
+            <h2><i class="fas fa-book"></i> Project Documentation</h2>
+        </div>
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-file-alt"></i> Documentation
+            </label>
+            {{ form.documentation }}
+            <small class="form-hint">Optional: Add detailed documentation, setup instructions, or API details</small>
+            {% if form.documentation.errors %}
+                <span class="error-message">{{ form.documentation.errors.0 }}</span>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section class="section-card fade-in" style="animation-delay: 0.4s;">
+        <div class="section-header">
+            <h2><i class="fas fa-cog"></i> Settings</h2>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="checkbox-label">
+                    {{ form.is_active }}
+                    <span><i class="fas fa-eye"></i> Show on Website</span>
+                </label>
+                <small class="form-hint">Make this project visible to visitors</small>
+            </div>
+            
+            <div class="form-group">
+                <label class="checkbox-label">
+                    {{ form.is_featured }}
+                    <span><i class="fas fa-star"></i> Featured Project</span>
+                </label>
+                <small class="form-hint">Highlight this project on homepage</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+        <a href="{% url 'manage_projects' %}" class="btn-secondary">
+            <i class="fas fa-times"></i> Cancel
+        </a>
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> {% if is_edit %}Update{% else %}Create{% endif %} Project
+        </button>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/create-project.js' %}"></script>
+{% endblock %}

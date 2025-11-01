@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Experience - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/manage-experience.css' %}">
+{% endblock %}
+
+{% block nav_experience %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">Manage Experience</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<div class="page-actions-header">
+    <a href="{% url 'create_experience' %}" class="btn-primary">
+        <i class="fas fa-plus-circle"></i> Add New Experience
+    </a>
+</div>
+
+<section class="section-card fade-in">
+    <div class="section-header">
+        <h2>Active Experience <span class="blog-count">(4)</span></h2>
+        <a href="{% url 'list_experience' %}?filter=active" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="experience-table">
+        <table class="management-table">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Company</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Visible</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Senior Full Stack Developer</strong></td>
+                    <td>TechCorp Inc.</td>
+                    <td>Jan 2023 - Present</td>
+                    <td><span class="status-badge status-active">Current</span></td>
+                    <td><label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label></td>
+                    <td class="table-actions">                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Frontend Developer</strong></td>
+                    <td>WebSolutions Ltd.</td>
+                    <td>Mar 2021 - Dec 2022</td>
+                    <td><span class="status-badge status-inactive">Past</span></td>
+                    <td><label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label></td>
+                    <td class="table-actions">                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Junior Web Developer</strong></td>
+                    <td>StartupHub</td>
+                    <td>Jun 2019 - Feb 2021</td>
+                    <td><span class="status-badge status-inactive">Past</span></td>
+                    <td><label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label></td>
+                    <td class="table-actions">                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Web Development Intern</strong></td>
+                    <td>Digital Agency Co.</td>
+                    <td>Jan 2019 - May 2019</td>
+                    <td><span class="status-badge status-inactive">Past</span></td>
+                    <td><label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label></td>
+                    <td class="table-actions">                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Draft Experience Section -->
+<section class="section-card fade-in">
+    <div class="section-header">
+        <h2>Draft Experience <span class="blog-count">(1)</span></h2>
+        <a href="{% url 'list_experience' %}?filter=draft" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="experience-table">
+        <table class="management-table">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Company</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Visible</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="draft-row">
+                    <td><strong>Freelance Developer</strong></td>
+                    <td>Self-Employed</td>
+                    <td>2018 - 2019</td>
+                    <td><span class="status-badge status-draft">Draft</span></td>
+                    <td><label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label></td>
+                    <td class="table-actions">                        <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
+
+{% block modals %}
+<div class="modal-overlay" id="delete-confirm-modal">
+    <div class="modal-content">
+        <div class="modal-header"><h2>Confirm Deletion</h2></div>
+        <div class="modal-body"><p>Are you sure you want to delete this experience entry?</p></div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="modal-cancel-btn">Cancel</button>
+            <button type="button" class="btn-danger" id="modal-confirm-btn">Delete</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/manage-experience.js' %}"></script>
+{% endblock %}
+

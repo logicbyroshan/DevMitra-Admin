@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Skill - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create-skill.css' %}">
+{% endblock %}
+
+{% block nav_skills %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">Create New Skill</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<form class="create-form" id="create-skill-form">
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Skill Information</h2>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Skill Name *</label>
+            <input type="text" class="form-input" placeholder="e.g., JavaScript, React, Python" required>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Skill Level *</label>
+                <select class="form-input" required>
+                    <option value="">Select Level</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                    <option value="expert">Expert</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Proficiency (%) *</label>
+                <input type="number" class="form-input" min="0" max="100" value="50" id="proficiency-input" required>
+                <div class="proficiency-preview">
+                    <div class="proficiency-bar">
+                        <div class="proficiency-fill" id="proficiency-fill" style="width: 50%;"></div>
+                    </div>
+                    <span class="proficiency-value" id="proficiency-value">50%</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-textarea" rows="4" placeholder="Brief description of your skill level and experience"></textarea>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Skill Icon</h2>
+        </div>
+        <div class="icon-selector">
+            <div class="icon-method">
+                <label class="radio-label">
+                    <input type="radio" name="icon-method" value="upload" checked>
+                    <span>Upload Custom Icon</span>
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="icon-method" value="fontawesome">
+                    <span>Use FontAwesome Icon</span>
+                </label>
+            </div>
+            <div class="icon-upload-section" id="icon-upload-section">
+                <div class="file-upload-area" id="icon-upload">
+                    <i class="fas fa-image"></i>
+                    <p>Click to upload skill icon</p>
+                    <span class="file-info">PNG, JPG, SVG (Max 1MB)</span>
+                    <input type="file" accept="image/*" hidden>
+                </div>
+                <div class="preview-container" id="icon-preview"></div>
+            </div>
+            <div class="icon-fontawesome-section" id="icon-fontawesome-section" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">FontAwesome Class</label>
+                    <input type="text" class="form-input" placeholder="e.g., fab fa-react" id="fa-class-input">
+                    <div class="fa-icon-preview" id="fa-icon-preview">
+                        <i class="fas fa-question"></i>
+                    </div>
+                </div>
+                <div class="popular-icons">
+                    <p class="section-subtitle">Popular Icons:</p>
+                    <div class="icon-grid">
+                        <div class="icon-option" data-icon="fab fa-js"><i class="fab fa-js"></i></div>
+                        <div class="icon-option" data-icon="fab fa-react"><i class="fab fa-react"></i></div>
+                        <div class="icon-option" data-icon="fab fa-python"><i class="fab fa-python"></i></div>
+                        <div class="icon-option" data-icon="fab fa-node"><i class="fab fa-node"></i></div>
+                        <div class="icon-option" data-icon="fab fa-html5"><i class="fab fa-html5"></i></div>
+                        <div class="icon-option" data-icon="fab fa-css3-alt"><i class="fab fa-css3-alt"></i></div>
+                        <div class="icon-option" data-icon="fab fa-php"><i class="fab fa-php"></i></div>
+                        <div class="icon-option" data-icon="fab fa-java"><i class="fab fa-java"></i></div>
+                        <div class="icon-option" data-icon="fab fa-docker"><i class="fab fa-docker"></i></div>
+                        <div class="icon-option" data-icon="fab fa-aws"><i class="fab fa-aws"></i></div>
+                        <div class="icon-option" data-icon="fas fa-database"><i class="fas fa-database"></i></div>
+                        <div class="icon-option" data-icon="fas fa-code"><i class="fas fa-code"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card fade-in">
+        <div class="section-header">
+            <h2>Certificate (Optional)</h2>
+        </div>
+        <div class="certificate-method">
+            <label class="radio-label">
+                <input type="radio" name="cert-method" value="file" checked>
+                <span>Upload Certificate File</span>
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="cert-method" value="link">
+                <span>Certificate Link</span>
+            </label>
+        </div>
+        <div class="cert-file-section" id="cert-file-section">
+            <div class="file-upload-area" id="cert-upload">
+                <i class="fas fa-certificate"></i>
+                <p>Click to upload certificate</p>
+                <span class="file-info">PDF, JPG, PNG (Max 5MB)</span>
+                <input type="file" accept=".pdf,image/*" hidden>
+            </div>
+            <div class="preview-container" id="cert-preview"></div>
+        </div>
+        <div class="cert-link-section" id="cert-link-section" style="display: none;">
+            <div class="form-group">
+                <label class="form-label">Certificate URL</label>
+                <input type="url" class="form-input" placeholder="https://certificates.example.com/your-certificate">
+            </div>
+        </div>
+    </section>
+
+    <div class="form-actions">
+        <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
+        <button type="submit" class="btn-primary">Add Skill</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/create-skill.js' %}"></script>
+{% endblock %}

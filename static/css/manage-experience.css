@@ -1,0 +1,17 @@
+/* ===== Manage Experience Specific Styles ===== */
+
+.experience-table {
+    overflow-x: auto;
+}
+
+/* Draft row styling */
+.draft-row {
+    opacity: 0.7;
+    background: rgba(107, 114, 128, 0.05);
+}
+
+.status-badge.status-draft {
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+}

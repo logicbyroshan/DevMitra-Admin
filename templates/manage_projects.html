@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Projects - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/manage-projects.css' %}">
+{% endblock %}
+
+{% block nav_projects %}active{% endblock %}
+
+{% block navbar_left %}
+<h1 class="page-title">Manage Projects</h1>
+{% endblock %}
+
+{% block user_info %}{% endblock %}
+
+{% block content %}
+<div class="page-actions-header">
+    <a href="{% url 'create_project' %}" class="btn-primary">
+        <i class="fas fa-plus-circle"></i> Create New Project
+    </a>
+</div>
+
+<!-- Active Projects Section -->
+<section class="section-card fade-in">
+    <div class="section-header">
+        <h2>Active Projects <span class="blog-count">({{ active_count }})</span></h2>
+        <a href="{% url 'list_projects' %}?filter=active" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="blog-grid">
+        {% for project in active_projects %}
+        <div class="blog-card" data-project-id="{{ project.id }}">
+            <div class="card-image">
+                {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/400x250/2563eb/ffffff?text={{ project.title|urlencode }}" alt="{{ project.title }}">
+                {% endif %}
+            </div>
+            <div class="card-content">
+                <span class="card-category">{{ project.category.name|default:"Uncategorized" }}</span>
+                <h4 class="card-title">{{ project.title }}</h4>
+                <p class="card-excerpt">{{ project.short_description|default:project.description|truncatewords:20 }}</p>
+                <div class="project-meta">
+                    <span class="tech-stack"><i class="fas fa-code"></i> {{ project.technologies }}</span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <label class="toggle-switch">
+                    <input type="checkbox" class="project-toggle" data-project-id="{{ project.id }}" {% if project.is_active %}checked{% endif %}>
+                    <span class="slider"></span>
+                </label>
+                <div class="action-buttons">
+                    <a href="{% url 'edit_project' project.id %}" class="btn-icon btn-edit" title="Edit Project">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </a>
+                    <button class="btn-icon btn-delete" data-project-id="{{ project.id }}" data-project-title="{{ project.title }}" title="Delete Project">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <p>No active projects yet. Create your first project!</p>
+            <a href="{% url 'create_project' %}" class="btn-primary">
+                <i class="fas fa-plus-circle"></i> Create Project
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Draft Projects Section -->
+<section class="section-card fade-in" style="animation-delay: 0.1s;">
+    <div class="section-header">
+        <h2>Draft Projects <span class="blog-count">({{ draft_count }})</span></h2>
+        <a href="{% url 'list_projects' %}?filter=draft" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="blog-grid">
+        {% for project in draft_projects %}
+        <div class="blog-card draft" data-project-id="{{ project.id }}">
+            <div class="card-image">
+                {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/400x250/6b7280/ffffff?text={{ project.title|urlencode }}" alt="{{ project.title }}">
+                {% endif %}
+            </div>
+            <div class="card-content">
+                <span class="card-category">{{ project.category.name|default:"Uncategorized" }}</span>
+                <h4 class="card-title">{{ project.title }}</h4>
+                <p class="card-excerpt">{{ project.short_description|default:project.description|truncatewords:20 }}</p>
+                <div class="project-meta">
+                    <span class="tech-stack"><i class="fas fa-code"></i> {{ project.technologies }}</span>
+                </div>
+                <span class="status-badge status-draft">Draft</span>
+            </div>
+            <div class="card-actions">
+                <label class="toggle-switch">
+                    <input type="checkbox" class="project-toggle" data-project-id="{{ project.id }}" {% if project.is_active %}checked{% endif %}>
+                    <span class="slider"></span>
+                </label>
+                <div class="action-buttons">
+                    <a href="{% url 'edit_project' project.id %}" class="btn-icon btn-edit" title="Edit Project">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </a>
+                    <button class="btn-icon btn-delete" data-project-id="{{ project.id }}" data-project-title="{{ project.title }}" title="Delete Project">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fas fa-file-alt"></i>
+            <p>No draft projects.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+{% block modals %}
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="delete-confirm-modal">
+    <div class="modal-content">
+        <div class="modal-header"><h2>Confirm Deletion</h2></div>
+        <div class="modal-body"><p>Are you sure you want to permanently delete this project? This action cannot be undone.</p></div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="modal-cancel-btn">Cancel</button>
+            <button type="button" class="btn-danger" id="modal-confirm-btn">Delete</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/manage-projects.js' %}"></script>
+{% endblock %}
+
