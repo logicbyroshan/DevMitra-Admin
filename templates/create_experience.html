@@ -4,6 +4,7 @@
 {% block title %}Create Experience - Admin Panel{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create-common.css' %}">
 <link rel="stylesheet" href="{% static 'css/create-experience.css' %}">
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 {% endblock %}
@@ -17,129 +18,229 @@
 {% block user_info %}{% endblock %}
 
 {% block content %}
-<form class="create-form" id="create-experience-form">
+<div class="back-navigation">
+    <a href="{% url 'manage_experience' %}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back to Experience
+    </a>
+</div>
+
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if form.non_field_errors %}
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ form.non_field_errors }}
+    </div>
+{% endif %}
+
+{% if form.errors %}
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i>
+        <strong>Please correct the following errors:</strong>
+        <ul style="margin: 0.5rem 0 0 1.5rem;">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ field|title }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<form class="create-form" id="create-experience-form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {# Hidden fields #}
+    <input type="hidden" name="order" value="0">
+    <input type="hidden" name="is_active" value="true">
+    
     <section class="section-card fade-in">
         <div class="section-header">
-            <h2>Basic Information</h2>
+            <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
         </div>
         <div class="form-grid">
             <div class="form-group">
-                <label class="form-label">Category *</label>
-                <select class="form-input" required>
-                    <option value="">Select Category</option>
-                    <option value="full-time">Full-time Employment</option>
-                    <option value="part-time">Part-time</option>
-                    <option value="freelance">Freelance</option>
-                    <option value="contract">Contract</option>
-                    <option value="internship">Internship</option>
-                    <option value="volunteer">Volunteer</option>
-                </select>
+                <label class="form-label">
+                    <i class="fas fa-briefcase"></i> Employment Type *
+                </label>
+                {{ form.employment_type }}
+                {% if form.employment_type.errors %}
+                    <span class="error-message">{{ form.employment_type.errors.0 }}</span>
+                {% endif %}
             </div>
             <div class="form-group">
-                <label class="form-label">Employment Status *</label>
-                <select class="form-input" required>
-                    <option value="current">Current</option>
-                    <option value="past">Past</option>
-                </select>
+                <label class="form-label">
+                    <i class="fas fa-clock"></i> Employment Status *
+                </label>
+                {{ form.employment_status }}
+                {% if form.employment_status.errors %}
+                    <span class="error-message">{{ form.employment_status.errors.0 }}</span>
+                {% endif %}
             </div>
         </div>
-        <div class="form-group">
-            <label class="form-label">Position Title *</label>
-            <input type="text" class="form-input" placeholder="e.g., Senior Full Stack Developer" required>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-user-tie"></i> Position/Role *
+                </label>
+                {{ form.position }}
+                {% if form.position.errors %}
+                    <span class="error-message">{{ form.position.errors.0 }}</span>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-map-marker-alt"></i> Location
+                </label>
+                {{ form.location }}
+                {% if form.location.errors %}
+                    <span class="error-message">{{ form.location.errors.0 }}</span>
+                {% endif %}
+            </div>
         </div>
-        <div class="form-group">
-            <label class="form-label">Location</label>
-            <input type="text" class="form-input" placeholder="e.g., San Francisco, CA or Remote">
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-align-left"></i> Short Description *
+            </label>
+            {{ form.short_description }}
+            <small class="form-hint">Brief summary of your role and key responsibilities</small>
+            {% if form.short_description.errors %}
+                <span class="error-message">{{ form.short_description.errors.0 }}</span>
+            {% endif %}
         </div>
     </section>
 
-    <section class="section-card fade-in">
+    <section class="section-card fade-in" style="animation-delay: 0.1s;">
         <div class="section-header">
-            <h2>Company Information</h2>
+            <h2><i class="fas fa-building"></i> Company Information</h2>
         </div>
-        <div class="form-group">
-            <label class="form-label">Company Name *</label>
-            <input type="text" class="form-input" placeholder="Enter company name" required>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-building"></i> Company Name *
+                </label>
+                {{ form.company_name }}
+                {% if form.company_name.errors %}
+                    <span class="error-message">{{ form.company_name.errors.0 }}</span>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-globe"></i> Company Website
+                </label>
+                {{ form.company_website }}
+                {% if form.company_website.errors %}
+                    <span class="error-message">{{ form.company_website.errors.0 }}</span>
+                {% endif %}
+            </div>
         </div>
-        <div class="form-group">
-            <label class="form-label">About Company</label>
-            <textarea class="form-textarea" rows="3" placeholder="Brief description of the company"></textarea>
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-info-circle"></i> About Company
+            </label>
+            {{ form.company_about }}
+            <small class="form-hint">Brief description of the company (optional)</small>
+            {% if form.company_about.errors %}
+                <span class="error-message">{{ form.company_about.errors.0 }}</span>
+            {% endif %}
         </div>
-        <div class="form-group">
-            <label class="form-label">Company Website</label>
-            <input type="url" class="form-input" placeholder="https://company.com">
-        </div>
-        <div class="form-group">
-            <label class="form-label">Company Logo</label>
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-image"></i> Company Logo
+            </label>
+            <small class="form-hint">Recommended: Square image (e.g., 400x400px). PNG, JPG, SVG (Max 2MB)</small>
             <div class="file-upload-area" id="logo-upload">
-                <i class="fas fa-building"></i>
-                <p>Click to upload company logo</p>
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Click to upload or drag and drop company logo</p>
                 <span class="file-info">PNG, JPG, SVG (Max 2MB)</span>
-                <input type="file" accept="image/*" hidden>
+            </div>
+            <div style="display: none;">
+                {{ form.company_logo }}
             </div>
             <div class="preview-container" id="logo-preview"></div>
+            {% if form.company_logo.errors %}
+                <span class="error-message">{{ form.company_logo.errors.0 }}</span>
+            {% endif %}
         </div>
     </section>
 
-    <section class="section-card fade-in">
+    <section class="section-card fade-in" style="animation-delay: 0.2s;">
         <div class="section-header">
-            <h2>Employment Duration</h2>
+            <h2><i class="fas fa-calendar-alt"></i> Employment Duration</h2>
         </div>
         <div class="form-grid">
             <div class="form-group">
-                <label class="form-label">Start Date *</label>
-                <input type="month" class="form-input" required>
+                <label class="form-label">
+                    <i class="far fa-calendar"></i> Start Date *
+                </label>
+                {{ form.start_date }}
+                {% if form.start_date.errors %}
+                    <span class="error-message">{{ form.start_date.errors.0 }}</span>
+                {% endif %}
             </div>
             <div class="form-group">
-                <label class="form-label">End Date</label>
-                <input type="month" class="form-input" id="end-date">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="currently-working"> I currently work here
+                <label class="form-label">
+                    <i class="far fa-calendar-check"></i> End Date
                 </label>
+                {{ form.end_date }}
+                <label class="checkbox-label">
+                    {{ form.currently_working }} I currently work here
+                </label>
+                {% if form.end_date.errors %}
+                    <span class="error-message">{{ form.end_date.errors.0 }}</span>
+                {% endif %}
             </div>
         </div>
     </section>
 
-    <section class="section-card fade-in">
+    <section class="section-card fade-in" style="animation-delay: 0.3s;">
         <div class="section-header">
-            <h2>Experience Description</h2>
+            <h2><i class="fas fa-images"></i> Workplace Images</h2>
         </div>
-        <div class="form-group">
-            <label class="form-label">Short Description *</label>
-            <textarea class="form-textarea" rows="3" placeholder="Brief summary of your role and responsibilities" required></textarea>
-        </div>
-    </section>
-
-    <section class="section-card fade-in">
-        <div class="section-header">
-            <h2>Workplace Images</h2>
-        </div>
-        <div class="form-group">
-            <label class="form-label">Upload Images</label>
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-images"></i> Upload Workplace Photos
+            </label>
+            <small class="form-hint">Maximum 5 images. PNG, JPG (Max 5MB each)</small>
             <div class="file-upload-area" id="workplace-upload">
-                <i class="fas fa-images"></i>
-                <p>Click to upload workplace photos</p>
-                <span class="file-info">PNG, JPG (Max 5MB each)</span>
-                <input type="file" accept="image/*" multiple hidden>
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Click to upload or drag and drop workplace photos</p>
+                <span class="file-info">PNG, JPG (Max 5MB each, 5 images max)</span>
             </div>
+            <input type="file" name="workplace_images" accept="image/*" multiple hidden id="workplace-input">
             <div class="preview-grid" id="workplace-preview"></div>
         </div>
     </section>
 
-    <section class="section-card fade-in">
+    <section class="section-card fade-in" style="animation-delay: 0.4s;">
         <div class="section-header">
-            <h2>Detailed Experience</h2>
+            <h2><i class="fas fa-file-alt"></i> Detailed Experience</h2>
         </div>
-        <div class="form-group">
-            <label class="form-label">Detailed Description *</label>
-            <textarea id="experience-details" class="tinymce-editor"></textarea>
+        <div class="form-group full-width">
+            <label class="form-label">
+                <i class="fas fa-align-left"></i> Detailed Description
+            </label>
+            {{ form.detailed_description }}
+            <small class="form-hint">Detailed description of your responsibilities, achievements, and learnings</small>
+            {% if form.detailed_description.errors %}
+                <span class="error-message">{{ form.detailed_description.errors.0 }}</span>
+            {% endif %}
         </div>
     </section>
 
     <div class="form-actions">
         <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
-        <button type="button" class="btn-secondary">Save as Draft</button>
-        <button type="submit" class="btn-primary">Publish Experience</button>
+        <button type="submit" name="save_draft" class="btn-secondary">Save as Draft</button>
+        <button type="submit" name="publish" class="btn-primary">Publish Experience</button>
     </div>
 </form>
 {% endblock %}

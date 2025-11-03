@@ -248,6 +248,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Draft and Publish Button Handlers
+    const saveDraftBtn = document.getElementById('save-draft-btn');
+    const publishBtn = document.getElementById('publish-btn');
+    const statusInput = document.getElementById('id_status');
+
+    if (saveDraftBtn) {
+        saveDraftBtn.addEventListener('click', function() {
+            // Set status to draft
+            if (statusInput) {
+                statusInput.value = 'draft';
+            }
+            // Trigger form submission
+            form.dispatchEvent(new Event('submit', { cancelable: true }));
+        });
+    }
+
+    if (publishBtn) {
+        publishBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Set status to active (or keep current status if editing)
+            if (statusInput) {
+                const currentStatus = statusInput.value;
+                // Only change to 'active' if it's currently 'draft' or empty
+                if (!currentStatus || currentStatus === 'draft') {
+                    statusInput.value = 'active';
+                }
+            }
+            // Trigger form submission
+            form.dispatchEvent(new Event('submit', { cancelable: true }));
+        });
+    }
+
     // Form Submission
     const form = document.getElementById('create-project-form');
     if (form) {
@@ -274,7 +306,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert(data.message || 'Project saved successfully!');
+                    const isDraft = formData.get('status') === 'draft';
+                    const message = isDraft ? 'Project saved as draft!' : (data.message || 'Project saved successfully!');
+                    alert(message);
                     if (data.redirect_url) {
                         window.location.href = data.redirect_url;
                     }

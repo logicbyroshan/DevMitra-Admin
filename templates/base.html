@@ -112,10 +112,69 @@
                         <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle theme">
                             <i class="fas fa-sun"></i>
                         </button>
-                        <button class="notification-btn">
-                            <i class="fas fa-bell"></i>
-                            <span class="notification-badge">3</span>
-                        </button>
+                        
+                        <!-- Notification Button with Dropdown -->
+                        <div class="notification-wrapper">
+                            <button class="notification-btn" id="notification-btn">
+                                <i class="fas fa-bell"></i>
+                                {% if unread_count > 0 %}
+                                <span class="notification-badge">{{ unread_count }}</span>
+                                {% endif %}
+                            </button>
+                            
+                            <!-- Notification Dropdown -->
+                            <div class="notification-dropdown" id="notification-dropdown">
+                                <div class="notification-header">
+                                    <h3>Notifications</h3>
+                                    {% if unread_count > 0 %}
+                                    <button class="mark-all-read-btn" onclick="markAllAsRead()">Mark all as read</button>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="notification-list">
+                                    {% if recent_notifications %}
+                                        {% for notification in recent_notifications %}
+                                        <div class="notification-item {% if not notification.is_read %}unread{% endif %}" data-id="{{ notification.id }}">
+                                            <div class="notification-icon notification-{{ notification.notification_type }}">
+                                                {% if notification.notification_type == 'success' %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% elif notification.notification_type == 'warning' %}
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                {% elif notification.notification_type == 'error' %}
+                                                    <i class="fas fa-times-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-info-circle"></i>
+                                                {% endif %}
+                                            </div>
+                                            <div class="notification-content">
+                                                <h4>{{ notification.title }}</h4>
+                                                <p>{{ notification.message|truncatewords:15 }}</p>
+                                                <span class="notification-time">{{ notification.created_at|timesince }} ago</span>
+                                            </div>
+                                            {% if not notification.is_read %}
+                                            <button class="mark-read-btn" onclick="markAsRead({{ notification.id }})">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="no-notifications">
+                                            <i class="fas fa-bell-slash"></i>
+                                            <p>No notifications</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="notification-footer">
+                                    <a href="{% url 'manage_notifications' %}" class="view-all-notifications-btn">
+                                        View All Notifications
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="user-profile">
                             <div class="user-avatar">A</div>
                             {% block user_info %}

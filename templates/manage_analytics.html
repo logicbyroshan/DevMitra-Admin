@@ -84,6 +84,86 @@
         </div>
     </section>
 
+    <!-- Browser Distribution -->
+    <section class="section-card chart-card">
+        <div class="card-header">
+            <h2 class="section-title">Browser Usage</h2>
+        </div>
+        <div class="chart-container">
+            <canvas id="browserChart"></canvas>
+        </div>
+    </section>
+</div>
+
+<!-- Second Charts Row -->
+<div class="charts-row">
+    <!-- Geographic Distribution -->
+    <section class="section-card chart-card">
+        <div class="card-header">
+            <h2 class="section-title"><i class="fas fa-globe-americas"></i> Top Countries</h2>
+            <span class="section-subtitle">Visitors by location</span>
+        </div>
+        <div class="countries-list">
+            <div class="country-item">
+                <div class="country-rank">1</div>
+                <div class="country-flag-wrapper">
+                    <span class="country-flag">🇺🇸</span>
+                </div>
+                <div class="country-details">
+                    <div class="country-header">
+                        <span class="country-name">United States</span>
+                        <span class="country-code">US</span>
+                    </div>
+                    <div class="country-stats">
+                        <span class="country-visitors"><i class="fas fa-users"></i> 18,542 visitors</span>
+                        <span class="country-percentage">40.4%</span>
+                    </div>
+                    <div class="country-bar">
+                        <div class="country-bar-fill" style="width: 85%;" data-width="85"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="country-item">
+                <div class="country-rank">2</div>
+                <div class="country-flag-wrapper">
+                    <span class="country-flag">🇬🇧</span>
+                </div>
+                <div class="country-details">
+                    <div class="country-header">
+                        <span class="country-name">United Kingdom</span>
+                        <span class="country-code">UK</span>
+                    </div>
+                    <div class="country-stats">
+                        <span class="country-visitors"><i class="fas fa-users"></i> 12,234 visitors</span>
+                        <span class="country-percentage">26.7%</span>
+                    </div>
+                    <div class="country-bar">
+                        <div class="country-bar-fill" style="width: 65%;" data-width="65"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="country-item">
+                <div class="country-rank">3</div>
+                <div class="country-flag-wrapper">
+                    <span class="country-flag">🇨🇦</span>
+                </div>
+                <div class="country-details">
+                    <div class="country-header">
+                        <span class="country-name">Canada</span>
+                        <span class="country-code">CA</span>
+                    </div>
+                    <div class="country-stats">
+                        <span class="country-visitors"><i class="fas fa-users"></i> 8,721 visitors</span>
+                        <span class="country-percentage">19.0%</span>
+                    </div>
+                    <div class="country-bar">
+                        <div class="country-bar-fill" style="width: 48%;" data-width="48"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Device Distribution -->
     <section class="section-card chart-card">
         <div class="card-header">
@@ -105,88 +185,6 @@
                 <span class="device-label"><i class="fas fa-tablet-alt"></i> Tablet</span>
                 <span class="device-value">9.0%</span>
             </div>
-        </div>
-    </section>
-</div>
-
-<!-- Second Charts Row -->
-<div class="charts-row">
-    <!-- Geographic Distribution -->
-    <section class="section-card chart-card">
-        <div class="card-header">
-            <h2 class="section-title">Top Countries</h2>
-        </div>
-        <div class="countries-list">
-            <div class="country-item">
-                <div class="country-info">
-                    <span class="country-flag">🇺🇸</span>
-                    <span class="country-name">United States</span>
-                </div>
-                <div class="country-stats">
-                    <span class="country-visitors">18,542</span>
-                    <div class="country-bar">
-                        <div class="country-bar-fill" style="width: 85%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="country-item">
-                <div class="country-info">
-                    <span class="country-flag">🇬🇧</span>
-                    <span class="country-name">United Kingdom</span>
-                </div>
-                <div class="country-stats">
-                    <span class="country-visitors">12,234</span>
-                    <div class="country-bar">
-                        <div class="country-bar-fill" style="width: 65%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="country-item">
-                <div class="country-info">
-                    <span class="country-flag">🇨🇦</span>
-                    <span class="country-name">Canada</span>
-                </div>
-                <div class="country-stats">
-                    <span class="country-visitors">8,721</span>
-                    <div class="country-bar">
-                        <div class="country-bar-fill" style="width: 48%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="country-item">
-                <div class="country-info">
-                    <span class="country-flag">🇩🇪</span>
-                    <span class="country-name">Germany</span>
-                </div>
-                <div class="country-stats">
-                    <span class="country-visitors">6,892</span>
-                    <div class="country-bar">
-                        <div class="country-bar-fill" style="width: 38%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="country-item">
-                <div class="country-info">
-                    <span class="country-flag">🇦🇺</span>
-                    <span class="country-name">Australia</span>
-                </div>
-                <div class="country-stats">
-                    <span class="country-visitors">5,421</span>
-                    <div class="country-bar">
-                        <div class="country-bar-fill" style="width: 30%;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Browser Distribution -->
-    <section class="section-card chart-card">
-        <div class="card-header">
-            <h2 class="section-title">Browser Usage</h2>
-        </div>
-        <div class="chart-container">
-            <canvas id="browserChart"></canvas>
         </div>
     </section>
 </div>
@@ -295,108 +293,6 @@
     </div>
 </section>
 
-<!-- Contact Responses Section -->
-<section class="section-card">
-    <div class="card-header">
-        <h2 class="section-title">Contact Responses</h2>
-        <a href="{% url 'list_contact_responses' %}" class="view-all-link">
-            View All <i class="fas fa-arrow-right"></i>
-        </a>
-    </div>
-    
-    <div class="stats-row">
-        <div class="stat-box">
-            <div class="stat-icon-small" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                <i class="fas fa-envelope"></i>
-            </div>
-            <div class="stat-info">
-                <p class="stat-label-small">Total Responses</p>
-                <h3 class="stat-value-small">89</h3>
-            </div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-icon-small" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <i class="fas fa-exclamation-circle"></i>
-            </div>
-            <div class="stat-info">
-                <p class="stat-label-small">Urgent Responses</p>
-                <h3 class="stat-value-small">12</h3>
-            </div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-icon-small" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="stat-info">
-                <p class="stat-label-small">Responded</p>
-                <h3 class="stat-value-small">67</h3>
-            </div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-icon-small" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                <i class="fas fa-clock"></i>
-            </div>
-            <div class="stat-info">
-                <p class="stat-label-small">Pending</p>
-                <h3 class="stat-value-small">22</h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="responses-preview">
-        <!-- Urgent Response -->
-        <div class="response-card urgent">
-            <div class="response-header">
-                <div class="response-meta">
-                    <h4>Sarah Johnson</h4>
-                    <span class="response-badge urgent-badge"><i class="fas fa-exclamation-circle"></i> Urgent</span>
-                </div>
-                <span class="response-time">2 hours ago</span>
-            </div>
-            <p class="response-email">sarah.johnson@company.com</p>
-            <p class="response-message">Hi, I'm interested in hiring you for a urgent project. We need a full-stack developer ASAP. Please respond at your earliest convenience.</p>
-            <div class="response-actions">
-                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
-                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
-            </div>
-        </div>
-
-        <!-- Normal Response -->
-        <div class="response-card">
-            <div class="response-header">
-                <div class="response-meta">
-                    <h4>Michael Chen</h4>
-                    <span class="response-badge normal-badge"><i class="fas fa-info-circle"></i> Normal</span>
-                </div>
-                <span class="response-time">5 hours ago</span>
-            </div>
-            <p class="response-email">m.chen@techcorp.io</p>
-            <p class="response-message">Great portfolio! I'd love to discuss potential collaboration opportunities. Let me know if you're available for a call next week.</p>
-            <div class="response-actions">
-                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
-                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
-            </div>
-        </div>
-
-        <!-- Normal Response -->
-        <div class="response-card">
-            <div class="response-header">
-                <div class="response-meta">
-                    <h4>Emily Rodriguez</h4>
-                    <span class="response-badge normal-badge"><i class="fas fa-info-circle"></i> Normal</span>
-                </div>
-                <span class="response-time">1 day ago</span>
-            </div>
-            <p class="response-email">emily.r@startup.com</p>
-            <p class="response-message">Impressive work on the AI Chatbot project! Would you be open to discussing how you built it?</p>
-            <div class="response-actions">
-                <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
-                <button class="btn-primary btn-sm"><i class="fas fa-reply"></i> Respond</button>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Real-time Activity -->
 <section class="section-card">
     <div class="card-header">
@@ -415,13 +311,6 @@
             <div class="activity-content">
                 <i class="fas fa-download"></i>
                 <span>Resume downloaded by visitor from <strong>London, UK</strong></span>
-            </div>
-        </div>
-        <div class="activity-item">
-            <div class="activity-time">32 min ago</div>
-            <div class="activity-content">
-                <i class="fas fa-envelope"></i>
-                <span>New contact form submission from <strong>John Doe</strong></span>
             </div>
         </div>
         <div class="activity-item">

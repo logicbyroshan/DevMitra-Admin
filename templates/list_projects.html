@@ -4,6 +4,7 @@
 {% block title %}All Projects - Admin Panel{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/list-common.css' %}">
 <link rel="stylesheet" href="{% static 'css/manage-projects.css' %}">
 <link rel="stylesheet" href="{% static 'css/view-all-projects.css' %}">
 {% endblock %}
@@ -30,10 +31,7 @@
     </div>
     <div class="filter-controls">
         <div class="filter-group">
-            <a href="{% url 'list_projects' %}" class="filter-btn {% if current_filter == 'all' %}active{% endif %}">All <span class="count">({{ total_count }})</span></a>
-            <a href="{% url 'list_projects' %}?filter=active" class="filter-btn {% if current_filter == 'active' %}active{% endif %}">Active <span class="count">({{ active_count }})</span></a>
-            <a href="{% url 'list_projects' %}?filter=completed" class="filter-btn {% if current_filter == 'completed' %}active{% endif %}">Completed <span class="count">({{ completed_count }})</span></a>
-            <a href="{% url 'list_projects' %}?filter=on-hold" class="filter-btn {% if current_filter == 'on-hold' %}active{% endif %}">On Hold <span class="count">({{ on_hold_count }})</span></a>
+            <a href="{% url 'list_projects' %}" class="filter-btn {% if not current_filter or current_filter == 'all' %}active{% endif %}">All <span class="count">({{ total_count }})</span></a>
             <a href="{% url 'list_projects' %}?filter=draft" class="filter-btn {% if current_filter == 'draft' %}active{% endif %}">Draft <span class="count">({{ draft_count }})</span></a>
         </div>
         <div class="sort-group">
@@ -50,22 +48,24 @@
 
 <div class="blog-grid" id="all-projects-grid">
     {% for project in projects %}
-    <div class="blog-card fade-in" data-status="{{ project.status }}" data-title="{{ project.title }}" data-date="{{ project.created_at|date:'Y-m-d' }}" data-project-id="{{ project.id }}">
+    <div class="blog-card fade-in {% if not project.is_active %}inactive{% endif %}" data-status="{{ project.status }}" data-title="{{ project.title }}" data-date="{{ project.created_at|date:'Y-m-d' }}" data-project-id="{{ project.id }}">
         <div class="card-image">
-            {% if project.image %}
-                <img src="{{ project.image.url }}" alt="{{ project.title }}">
+            {% if project.thumbnail %}
+                <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}">
             {% else %}
                 <img src="https://via.placeholder.com/400x250/2563eb/ffffff?text={{ project.title|urlencode }}" alt="{{ project.title }}">
+            {% endif %}
+            {% if not project.is_active %}
+            <span class="status-badge status-inactive">Inactive</span>
             {% endif %}
         </div>
         <div class="card-content">
             <span class="card-category">{{ project.category.name|default:"Uncategorized" }}</span>
             <h4 class="card-title">{{ project.title }}</h4>
-            <p class="card-excerpt">{{ project.short_description|default:project.description|truncatewords:20 }}</p>
+            <p class="card-excerpt">{{ project.description|truncatewords:20 }}</p>
             <div class="project-meta">
                 <span class="tech-stack"><i class="fas fa-code"></i> {{ project.technologies }}</span>
             </div>
-            <span class="status-badge status-{{ project.status }}">{{ project.get_status_display }}</span>
         </div>
         <div class="card-actions">
             <label class="toggle-switch">

@@ -4,8 +4,9 @@
 {% block title %}All Skills - Admin Panel{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/manage-skills.css' %}">
-<link rel="stylesheet" href="{% static 'css/view-all-skills.css' %}">
+<link rel="stylesheet" href="{% static 'css/list-common.css' %}">
+<link rel="stylesheet" href="{% static 'css/manage-skills.css' %}?v=4">
+<link rel="stylesheet" href="{% static 'css/view-all-skills.css' %}?v=4">
 {% endblock %}
 
 {% block nav_skills %}active{% endblock %}
@@ -30,9 +31,12 @@
     </div>
     <div class="filter-controls">
         <div class="filter-group">
-            <button class="filter-btn active" data-filter="all">All <span class="count">(8)</span></button>
-            <button class="filter-btn" data-filter="active">Active <span class="count">(6)</span></button>
-            <button class="filter-btn" data-filter="draft">Draft <span class="count">(2)</span></button>
+            <a href="{% url 'list_skills' %}" class="filter-btn {% if not current_filter or current_filter == 'all' %}active{% endif %}">
+                All <span class="count">({{ total_count }})</span>
+            </a>
+            <a href="{% url 'list_skills' %}?filter=draft" class="filter-btn {% if current_filter == 'draft' %}active{% endif %}">
+                Draft <span class="count">({{ draft_count }})</span>
+            </a>
         </div>
         <div class="sort-group">
             <label for="sort-select">Sort by:</label>
@@ -47,183 +51,49 @@
 </div>
 
 <div class="skills-grid" id="all-skills-grid">
-    <!-- Active Skills -->
-    <div class="skill-card fade-in" data-status="active" data-title="JavaScript" data-proficiency="95">
+    {% for skill in skills %}
+    <div class="skill-card {% if skill.is_draft %}draft{% endif %} fade-in {% if not skill.is_active %}inactive{% endif %}" 
+         data-status="{% if skill.is_draft %}draft{% else %}active{% endif %}" 
+         data-title="{{ skill.name }}" 
+         data-proficiency="{{ skill.proficiency }}"
+         data-skill-id="{{ skill.id }}">
         <div class="skill-header">
-            <h4>JavaScript</h4>
-            <span class="skill-percentage">95%</span>
+            <h4>{{ skill.name }}</h4>
+            <span class="skill-percentage">{{ skill.proficiency }}%</span>
         </div>
         <div class="skill-bar">
-            <div class="skill-progress" style="width: 95%;"></div>
+            <div class="skill-progress" style="width: {{ skill.proficiency }}%;"></div>
         </div>
         <div class="skill-meta">
-            <span class="skill-level-badge expert">Expert</span>
-            <span class="skill-years">5+ years</span>
+            <span class="skill-level-badge {{ skill.skill_level }}">{{ skill.get_skill_level_display }}</span>
+            {% if skill.is_draft %}
+            <span class="status-badge status-draft">Draft</span>
+            {% endif %}
         </div>
-        <span class="status-badge status-active">Active</span>
         <div class="skill-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+            <label class="toggle-switch">
+                <input type="checkbox" class="skill-toggle" data-skill-id="{{ skill.id }}" {% if skill.is_active %}checked{% endif %}>
+                <span class="slider"></span>
+            </label>
             <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                <a href="{% url 'edit_skill' skill.id %}" class="btn-icon btn-edit">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                </a>
+                <button type="button" class="btn-icon btn-delete" data-skill-id="{{ skill.id }}" data-skill-name="{{ skill.name }}">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
             </div>
         </div>
     </div>
-
-    <div class="skill-card fade-in" data-status="active" data-title="React.js" data-proficiency="90">
-        <div class="skill-header">
-            <h4>React.js</h4>
-            <span class="skill-percentage">90%</span>
-        </div>
-        <div class="skill-bar">
-            <div class="skill-progress" style="width: 90%;"></div>
-        </div>
-        <div class="skill-meta">
-            <span class="skill-level-badge advanced">Advanced</span>
-            <span class="skill-years">4+ years</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="skill-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
+    {% empty %}
+    <div class="empty-state">
+        <i class="fas fa-code"></i>
+        <p>No skills found{% if current_filter != 'all' %} with filter "{{ current_filter }}"{% endif %}.</p>
+        <a href="{% url 'create_skill' %}" class="btn-primary">
+            <i class="fas fa-plus-circle"></i> Add Skill
+        </a>
     </div>
-
-    <div class="skill-card fade-in" data-status="active" data-title="Node.js" data-proficiency="88">
-        <div class="skill-header">
-            <h4>Node.js</h4>
-            <span class="skill-percentage">88%</span>
-        </div>
-        <div class="skill-bar">
-            <div class="skill-progress" style="width: 88%;"></div>
-        </div>
-        <div class="skill-meta">
-            <span class="skill-level-badge advanced">Advanced</span>
-            <span class="skill-years">4+ years</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="skill-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="skill-card fade-in" data-status="active" data-title="Python" data-proficiency="85">
-        <div class="skill-header">
-            <h4>Python</h4>
-            <span class="skill-percentage">85%</span>
-        </div>
-        <div class="skill-bar">
-            <div class="skill-progress" style="width: 85%;"></div>
-        </div>
-        <div class="skill-meta">
-            <span class="skill-level-badge advanced">Advanced</span>
-            <span class="skill-years">3+ years</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="skill-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="skill-card fade-in" data-status="active" data-title="MongoDB" data-proficiency="82">
-        <div class="skill-header">
-            <h4>MongoDB</h4>
-            <span class="skill-percentage">82%</span>
-        </div>
-        <div class="skill-bar">
-            <div class="skill-progress" style="width: 82%;"></div>
-        </div>
-        <div class="skill-meta">
-            <span class="skill-level-badge advanced">Advanced</span>
-            <span class="skill-years">3+ years</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="skill-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="skill-card fade-in" data-status="active" data-title="Docker" data-proficiency="75">
-        <div class="skill-header">
-            <h4>Docker</h4>
-            <span class="skill-percentage">75%</span>
-        </div>
-        <div class="skill-bar">
-            <div class="skill-progress" style="width: 75%;"></div>
-        </div>
-        <div class="skill-meta">
-            <span class="skill-level-badge intermediate">Intermediate</span>
-            <span class="skill-years">2+ years</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="skill-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Draft Skills -->
-    <div class="skill-card draft fade-in" data-status="draft" data-title="Kubernetes" data-proficiency="60">
-        <div class="skill-header">
-            <h4>Kubernetes</h4>
-            <span class="skill-percentage">60%</span>
-        </div>
-        <div class="skill-bar">
-            <div class="skill-progress" style="width: 60%;"></div>
-        </div>
-        <div class="skill-meta">
-            <span class="skill-level-badge intermediate">Intermediate</span>
-            <span class="skill-years">1+ years</span>
-        </div>
-        <span class="status-badge status-draft">Draft</span>
-        <div class="skill-actions">
-            <label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="skill-card draft fade-in" data-status="draft" data-title="GraphQL" data-proficiency="70">
-        <div class="skill-header">
-            <h4>GraphQL</h4>
-            <span class="skill-percentage">70%</span>
-        </div>
-        <div class="skill-bar">
-            <div class="skill-progress" style="width: 70%;"></div>
-        </div>
-        <div class="skill-meta">
-            <span class="skill-level-badge intermediate">Intermediate</span>
-            <span class="skill-years">1+ years</span>
-        </div>
-        <span class="status-badge status-draft">Draft</span>
-        <div class="skill-actions">
-            <label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 
 <div class="no-results" id="no-results" style="display: none;">
@@ -232,7 +102,20 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/view-all-skills.js' %}"></script>
+{% block modals %}
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="delete-confirm-modal">
+    <div class="modal-content">
+        <div class="modal-header"><h2>Confirm Deletion</h2></div>
+        <div class="modal-body"><p>Are you sure you want to permanently delete this skill? This action cannot be undone.</p></div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="modal-cancel-btn">Cancel</button>
+            <button type="button" class="btn-danger" id="modal-confirm-btn">Delete</button>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'js/view-all-skills.js' %}?v=2"></script>
+{% endblock %}

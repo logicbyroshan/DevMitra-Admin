@@ -86,33 +86,6 @@ document.getElementById('social-links-form')?.addEventListener('submit', async f
     }
 });
 
-// Contact Information Form
-document.getElementById('contact-form')?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    
-    try {
-        const response = await fetch(window.location.href, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': getCSRFToken(),
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: formData
-        });
-        
-        const data = await response.json();
-        if (data.success) {
-            showNotification(data.message || 'Contact information updated successfully!');
-        } else {
-            showNotification(data.message || 'Failed to update contact info', 'error');
-        }
-    } catch (error) {
-        showNotification('An error occurred. Please try again.', 'error');
-        console.error('Error:', error);
-    }
-});
-
 // SEO Form
 document.getElementById('seo-form')?.addEventListener('submit', async function(e) {
     e.preventDefault();

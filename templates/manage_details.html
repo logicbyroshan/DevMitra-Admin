@@ -130,47 +130,6 @@
     </form>
 </section>
 
-<!-- Contact Information Section -->
-<section class="section-card fade-in" style="animation-delay: 0.3s;">
-    <div class="section-header">
-        <h2><i class="fas fa-address-book"></i> Contact Information</h2>
-    </div>
-    <form class="details-form" id="contact-form">
-        {% csrf_token %}
-        <input type="hidden" name="form_type" value="contact_info">
-        <div class="form-grid">
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-envelope"></i> Contact Email</label>
-                <input type="email" class="form-input" name="contact_email" value="{{ profile.contact_email }}" placeholder="Public contact email">
-            </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-phone"></i> Contact Phone</label>
-                <input type="tel" class="form-input" name="contact_phone" value="{{ profile.contact_phone }}" placeholder="Public contact phone">
-            </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-map-marker-alt"></i> Address</label>
-                <input type="text" class="form-input" name="address" value="{{ profile.address }}" placeholder="Street address">
-            </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-city"></i> City</label>
-                <input type="text" class="form-input" name="city" value="{{ profile.city }}" placeholder="City">
-            </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-flag"></i> State/Region</label>
-                <input type="text" class="form-input" name="state" value="{{ profile.state }}" placeholder="State or region">
-            </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-globe-americas"></i> Country</label>
-                <input type="text" class="form-input" name="country" value="{{ profile.country }}" placeholder="Country">
-            </div>
-        </div>
-        <div class="form-actions">
-            <button type="button" class="btn-secondary">Cancel</button>
-            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Contact Info</button>
-        </div>
-    </form>
-</section>
-
 <!-- Resume & Documents Section -->
 <section class="section-card fade-in" style="animation-delay: 0.4s;">
     <div class="section-header">
@@ -182,9 +141,9 @@
                 <i class="fas fa-file-pdf"></i>
             </div>
             <h4>Resume / CV</h4>
-            {% if profile.resume %}
+            {% if profile.resume and resume_exists %}
                 <p class="file-name">{{ profile.resume.name }}</p>
-                <p class="file-size">{{ profile.resume.size|filesizeformat }}</p>
+                <p class="file-size">{{ resume_size|filesizeformat }}</p>
                 <div class="upload-actions">
                     <form id="upload-resume-form" enctype="multipart/form-data" style="display: inline;">
                         {% csrf_token %}
@@ -215,9 +174,9 @@
                 <i class="fas fa-file-alt"></i>
             </div>
             <h4>Cover Letter</h4>
-            {% if profile.cover_letter %}
+            {% if profile.cover_letter and cover_letter_exists %}
                 <p class="file-name">{{ profile.cover_letter.name }}</p>
-                <p class="file-size">{{ profile.cover_letter.size|filesizeformat }}</p>
+                <p class="file-size">{{ cover_letter_size|filesizeformat }}</p>
                 <div class="upload-actions">
                     <form id="upload-cover-letter-form" enctype="multipart/form-data" style="display: inline;">
                         {% csrf_token %}

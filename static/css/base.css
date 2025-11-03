@@ -217,7 +217,7 @@ button { background: none; border: none; cursor: pointer; }
 .blog-card,
 .content-card,
 .note-card {
-    background-color: var(--bg-cards);
+    background-color: var(--bg-main);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
     display: flex;

@@ -4,8 +4,9 @@
 {% block title %}All Achievements - Admin Panel{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/manage-achievements.css' %}">
-<link rel="stylesheet" href="{% static 'css/view-all-achievements.css' %}">
+<link rel="stylesheet" href="{% static 'css/list-common.css' %}">
+<link rel="stylesheet" href="{% static 'css/manage-achievements.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/view-all-achievements.css' %}?v=1">
 {% endblock %}
 
 {% block nav_achievements %}active{% endblock %}
@@ -30,9 +31,12 @@
     </div>
     <div class="filter-controls">
         <div class="filter-group">
-            <button class="filter-btn active" data-filter="all">All <span class="count">(8)</span></button>
-            <button class="filter-btn" data-filter="active">Active <span class="count">(6)</span></button>
-            <button class="filter-btn" data-filter="draft">Draft <span class="count">(2)</span></button>
+            <a href="{% url 'list_achievements' %}" class="filter-btn {% if not current_filter or current_filter == 'all' %}active{% endif %}">
+                All <span class="count">({{ total_count }})</span>
+            </a>
+            <a href="{% url 'list_achievements' %}?filter=draft" class="filter-btn {% if current_filter == 'draft' %}active{% endif %}">
+                Draft <span class="count">({{ draft_count }})</span>
+            </a>
         </div>
         <div class="sort-group">
             <label for="sort-select">Sort by:</label>
@@ -47,176 +51,68 @@
 </div>
 
 <div class="achievements-grid" id="all-achievements-grid">
-    <!-- Active Achievements -->
-    <div class="achievement-card fade-in" data-status="active" data-title="AWS Certified Solutions Architect" data-date="2025-09-01">
+    {% for achievement in achievements %}
+    <div class="achievement-card {% if achievement.is_draft %}draft{% endif %} fade-in {% if not achievement.is_active %}inactive{% endif %}" 
+         data-status="{% if achievement.is_draft %}draft{% else %}active{% endif %}" 
+         data-title="{{ achievement.title }}" 
+         data-date="{{ achievement.achievement_date|date:'Y-m-d' }}"
+         data-achievement-id="{{ achievement.id }}">
         <div class="achievement-icon">
+            {% if achievement.icon_type == 'upload' and achievement.icon_image %}
+            <img src="{{ achievement.icon_image.url }}" alt="{{ achievement.title }}">
+            {% elif achievement.icon_type == 'fontawesome' and achievement.icon_class %}
+            <i class="{{ achievement.icon_class }}"></i>
+            {% else %}
             <i class="fas fa-award"></i>
+            {% endif %}
         </div>
         <div class="achievement-content">
-            <h4>AWS Certified Solutions Architect</h4>
-            <p class="achievement-issuer"><i class="fas fa-building"></i> Amazon Web Services</p>
-            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> September 2025</p>
-            <span class="achievement-type">Certification</span>
+            <h4>{{ achievement.title }}</h4>
+            <p class="achievement-issuer"><i class="fas fa-building"></i> {{ achievement.issuing_organization }}</p>
+            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> {{ achievement.achievement_date|date:"F Y" }}</p>
+            <span class="achievement-type">{{ achievement.get_category_display }}</span>
         </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="achievement-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="achievement-card fade-in" data-status="active" data-title="Best Innovation Award 2025" data-date="2025-08-01">
-        <div class="achievement-icon">
-            <i class="fas fa-trophy"></i>
-        </div>
-        <div class="achievement-content">
-            <h4>Best Innovation Award 2025</h4>
-            <p class="achievement-issuer"><i class="fas fa-building"></i> Tech Summit</p>
-            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> August 2025</p>
-            <span class="achievement-type">Award</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="achievement-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="achievement-card fade-in" data-status="active" data-title="Google Cloud Professional Developer" data-date="2025-07-01">
-        <div class="achievement-icon">
-            <i class="fas fa-certificate"></i>
-        </div>
-        <div class="achievement-content">
-            <h4>Google Cloud Professional Developer</h4>
-            <p class="achievement-issuer"><i class="fas fa-building"></i> Google Cloud</p>
-            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> July 2025</p>
-            <span class="achievement-type">Certification</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="achievement-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="achievement-card fade-in" data-status="active" data-title="Microsoft Azure Fundamentals" data-date="2025-05-01">
-        <div class="achievement-icon">
-            <i class="fas fa-certificate"></i>
-        </div>
-        <div class="achievement-content">
-            <h4>Microsoft Azure Fundamentals</h4>
-            <p class="achievement-issuer"><i class="fas fa-building"></i> Microsoft</p>
-            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> May 2025</p>
-            <span class="achievement-type">Certification</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="achievement-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="achievement-card fade-in" data-status="active" data-title="Hackathon Winner 2024" data-date="2024-12-01">
-        <div class="achievement-icon">
-            <i class="fas fa-trophy"></i>
-        </div>
-        <div class="achievement-content">
-            <h4>Hackathon Winner 2024</h4>
-            <p class="achievement-issuer"><i class="fas fa-building"></i> DevFest Global</p>
-            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> December 2024</p>
-            <span class="achievement-type">Award</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="achievement-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="achievement-card fade-in" data-status="active" data-title="Certified Scrum Master" data-date="2024-10-01">
-        <div class="achievement-icon">
-            <i class="fas fa-certificate"></i>
-        </div>
-        <div class="achievement-content">
-            <h4>Certified Scrum Master</h4>
-            <p class="achievement-issuer"><i class="fas fa-building"></i> Scrum Alliance</p>
-            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> October 2024</p>
-            <span class="achievement-type">Certification</span>
-        </div>
-        <span class="status-badge status-active">Active</span>
-        <div class="achievement-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Draft Achievements -->
-    <div class="achievement-card draft fade-in" data-status="draft" data-title="Docker Certified Associate" data-date="2025-11-01">
-        <div class="achievement-icon">
-            <i class="fas fa-certificate"></i>
-        </div>
-        <div class="achievement-content">
-            <h4>Docker Certified Associate</h4>
-            <p class="achievement-issuer"><i class="fas fa-building"></i> Docker Inc.</p>
-            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> November 2025</p>
-            <span class="achievement-type">Certification</span>
-        </div>
+        {% if achievement.is_draft %}
         <span class="status-badge status-draft">Draft</span>
+        {% endif %}
         <div class="achievement-actions">
-            <label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label>
+            <label class="toggle-switch">
+                <input type="checkbox" class="achievement-toggle" data-achievement-id="{{ achievement.id }}" {% if achievement.is_active %}checked{% endif %}>
+                <span class="slider"></span>
+            </label>
             <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
+                <a href="{% url 'edit_achievement' achievement.id %}" class="btn-icon btn-edit">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                </a>
+                <button type="button" class="btn-icon btn-delete" data-achievement-id="{{ achievement.id }}" data-achievement-title="{{ achievement.title }}">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
             </div>
         </div>
     </div>
-
-    <div class="achievement-card draft fade-in" data-status="draft" data-title="Speaker at Dev Conference" data-date="2025-10-01">
-        <div class="achievement-icon">
-            <i class="fas fa-microphone"></i>
-        </div>
-        <div class="achievement-content">
-            <h4>Speaker at Dev Conference</h4>
-            <p class="achievement-issuer"><i class="fas fa-building"></i> Tech Speakers Network</p>
-            <p class="achievement-date"><i class="fas fa-calendar-alt"></i> October 2025</p>
-            <span class="achievement-type">Recognition</span>
-        </div>
-        <span class="status-badge status-draft">Draft</span>
-        <div class="achievement-actions">
-            <label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
+    {% empty %}
+    <div class="empty-state">
+        <i class="fas fa-award"></i>
+        <p>No achievements found.</p>
     </div>
+    {% endfor %}
 </div>
+{% endblock %}
 
-<div class="no-results" id="no-results" style="display: none;">
-    <i class="fas fa-search"></i>
-    <p>No achievements found matching your criteria.</p>
+{% block modals %}
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="delete-confirm-modal">
+    <div class="modal-content">
+        <div class="modal-header"><h2>Confirm Deletion</h2></div>
+        <div class="modal-body"><p>Are you sure you want to permanently delete this achievement? This action cannot be undone.</p></div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="modal-cancel-btn">Cancel</button>
+            <button type="button" class="btn-danger" id="modal-confirm-btn">Delete</button>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/view-all-achievements.js' %}"></script>
+<script src="{% static 'js/view-all-achievements.js' %}?v=1"></script>
 {% endblock %}
-

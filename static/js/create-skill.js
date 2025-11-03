@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Icon Method Toggle
-    const iconMethodRadios = document.querySelectorAll('input[name="icon-method"]');
+    const iconTypeRadios = document.querySelectorAll('input[name="icon_type"]');
     const iconUploadSection = document.getElementById('icon-upload-section');
     const iconFontAwesomeSection = document.getElementById('icon-fontawesome-section');
 
-    iconMethodRadios.forEach(radio => {
+    iconTypeRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'upload') {
                 iconUploadSection.style.display = 'block';
@@ -26,6 +26,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Set initial state based on checked radio
+    const checkedIconType = document.querySelector('input[name="icon_type"]:checked');
+    if (checkedIconType && checkedIconType.value === 'fontawesome') {
+        iconUploadSection.style.display = 'none';
+        iconFontAwesomeSection.style.display = 'block';
+    }
 
     // Icon Upload
     const iconUpload = document.getElementById('icon-upload');
@@ -102,11 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Certificate Method Toggle
-    const certMethodRadios = document.querySelectorAll('input[name="cert-method"]');
+    const certTypeRadios = document.querySelectorAll('input[name="certificate_type"]');
     const certFileSection = document.getElementById('cert-file-section');
     const certLinkSection = document.getElementById('cert-link-section');
 
-    certMethodRadios.forEach(radio => {
+    certTypeRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'file') {
                 certFileSection.style.display = 'block';
@@ -117,6 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Set initial state based on checked radio
+    const checkedCertType = document.querySelector('input[name="certificate_type"]:checked');
+    if (checkedCertType && checkedCertType.value === 'link') {
+        certFileSection.style.display = 'none';
+        certLinkSection.style.display = 'block';
+    }
 
     // Certificate Upload
     const certUpload = document.getElementById('cert-upload');
@@ -174,11 +188,33 @@ document.addEventListener('DOMContentLoaded', function() {
         certInput.value = '';
     };
 
-    // Form Submission
+    // Handle Draft Button
+    const saveDraftBtn = document.getElementById('save-draft-btn');
+    if (saveDraftBtn) {
+        saveDraftBtn.addEventListener('click', function() {
+            // Set is_draft to true
+            const isDraftInput = document.querySelector('input[name="is_draft"]');
+            if (!isDraftInput) {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'is_draft';
+                hiddenInput.value = 'true';
+                form.appendChild(hiddenInput);
+            } else {
+                isDraftInput.value = 'true';
+            }
+            
+            // Submit the form
+            form.submit();
+        });
+    }
+
+    // Form Submission - Remove the alert and allow normal submission
     const form = document.getElementById('create-skill-form');
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Skill created successfully!');
-        // window.location.href = 'DevMitra-ManageSkills.html';
-    });
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            // Allow form to submit normally
+            // No e.preventDefault() needed
+        });
+    }
 });

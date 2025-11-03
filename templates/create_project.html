@@ -4,6 +4,7 @@
 {% block title %}{% if is_edit %}Edit{% else %}Create{% endif %} Project - Admin Panel{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create-common.css' %}">
 <link rel="stylesheet" href="{% static 'css/create-project.css' %}">
 {% endblock %}
 
@@ -39,15 +40,8 @@
                 {% endif %}
             </div>
             
-            <div class="form-group">
-                <label class="form-label">
-                    <i class="fas fa-tasks"></i> Project Status *
-                </label>
-                {{ form.status }}
-                {% if form.status.errors %}
-                    <span class="error-message">{{ form.status.errors.0 }}</span>
-                {% endif %}
-            </div>
+            <!-- Hidden status field - controlled by Save as Draft / Publish buttons -->
+            <input type="hidden" name="status" id="id_status" value="{{ form.status.value|default:'active' }}">
         </div>
         
         <div class="form-grid">
@@ -298,11 +292,14 @@
 
     <!-- Form Actions -->
     <div class="form-actions">
-        <a href="{% url 'manage_projects' %}" class="btn-secondary">
+        <a href="{% url 'manage_projects' %}" class="btn-cancel">
             <i class="fas fa-times"></i> Cancel
         </a>
-        <button type="submit" class="btn-primary">
-            <i class="fas fa-save"></i> {% if is_edit %}Update{% else %}Create{% endif %} Project
+        <button type="button" id="save-draft-btn" class="btn-draft">
+            <i class="fas fa-file"></i> Save as Draft
+        </button>
+        <button type="submit" id="publish-btn" class="btn-submit">
+            <i class="fas fa-save"></i> {% if is_edit %}Update{% else %}Publish{% endif %} Project
         </button>
     </div>
 </form>

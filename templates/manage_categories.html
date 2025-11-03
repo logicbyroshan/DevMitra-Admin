@@ -38,13 +38,16 @@
             {% for category in categories %}
             <div class="category-card" data-category-id="{{ category.id }}" data-category-type="{{ category.category_type }}">
                 <div class="category-header">
-                    <div class="category-icon" style="background-color: {{ category.color }}20; color: {{ category.color }};">
+                    <div class="category-icon" style="background: linear-gradient(135deg, {{ category.color }}15 0%, {{ category.color }}25 100%); color: {{ category.color }};">
                         <i class="{{ category.icon }}"></i>
                     </div>
                     <div class="category-info">
                         <h4>{{ category.name }}</h4>
-                        <p class="category-type" style="color: #6b7280; font-size: 0.75rem; margin: 2px 0;">{{ category.get_category_type_display }}</p>
-                        <p class="category-count">{{ category.item_count }} Item{{ category.item_count|pluralize }}</p>
+                        <div class="category-meta">
+                            <span class="category-type">{{ category.get_category_type_display }}</span>
+                            <span class="category-divider">•</span>
+                            <span class="category-count">{{ category.item_count }} Item{{ category.item_count|pluralize }}</span>
+                        </div>
                     </div>
                 </div>
                 <div class="category-actions">

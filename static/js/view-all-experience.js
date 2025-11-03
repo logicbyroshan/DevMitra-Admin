@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const sortSelect = document.getElementById('sort-select');
     const experienceGrid = document.getElementById('all-experience-grid');
     const experienceCards = Array.from(experienceGrid.querySelectorAll('.experience-card'));
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+    const toggleSwitches = document.querySelectorAll('.experience-toggle');
 
     // Get filter from URL parameter
     const urlParams = new URLSearchParams(window.location.search);
@@ -16,6 +18,72 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             btn.classList.remove('active');
         }
+    });
+
+    // Handle toggle switch for active/inactive
+    toggleSwitches.forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            const experienceId = this.dataset.experienceId;
+            const isActive = this.checked;
+            const card = this.closest('.experience-card');
+
+            fetch(`/experience/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `experience_id=${experienceId}&is_active=${isActive}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (isActive) {
+                        card.classList.remove('inactive');
+                    } else {
+                        card.classList.add('inactive');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                this.checked = !isActive;
+            });
+        });
+    });
+
+    // Handle delete buttons
+    deleteButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const experienceId = this.dataset.experienceId;
+            const experienceTitle = this.dataset.experienceTitle;
+            const card = this.closest('.experience-card');
+
+            if (confirm(`Are you sure you want to delete "${experienceTitle}"? This action cannot be undone.`)) {
+                fetch(`/experience/${experienceId}/delete/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.remove();
+                        }, 300);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete experience');
+                });
+            }
+        });
     });
 
     // Initial filter and sort
@@ -92,9 +160,21 @@ document.addEventListener('DOMContentLoaded', function() {
         visibleCards.forEach(card => {
             experienceGrid.appendChild(card);
         });
-        // Reorder cards in the DOM
-        visibleCards.forEach(card => {
-            experienceGrid.appendChild(card);
-        });
+    }
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
 });

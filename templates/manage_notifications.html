@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Notifications - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/manage-notifications.css' %}">
+{% endblock %}
+
+{% block nav_notifications %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Manage Notifications</h1>
+    <div class="header-actions">
+        {% if unread_count > 0 %}
+        <button class="btn-secondary" onclick="markAllAsRead()">
+            <i class="fas fa-check-double"></i> Mark All as Read
+        </button>
+        {% endif %}
+        <button class="btn-primary" onclick="openCreateModal()">
+            <i class="fas fa-plus"></i> Create Notification
+        </button>
+    </div>
+</div>
+
+<!-- Filter and Search -->
+<div class="filter-bar">
+    <div class="filter-buttons">
+        <button class="filter-btn {% if not current_filter or current_filter == 'all' %}active{% endif %}" data-filter="all">
+            All <span class="count">{{ total_count }}</span>
+        </button>
+        <button class="filter-btn {% if current_filter == 'unread' %}active{% endif %}" data-filter="unread">
+            Unread <span class="count">{{ unread_count }}</span>
+        </button>
+        <button class="filter-btn {% if current_filter == 'read' %}active{% endif %}" data-filter="read">
+            Read <span class="count">{{ read_count }}</span>
+        </button>
+        <button class="filter-btn {% if current_filter == 'info' %}active{% endif %}" data-filter="info">
+            Info <span class="count">{{ info_count }}</span>
+        </button>
+        <button class="filter-btn {% if current_filter == 'success' %}active{% endif %}" data-filter="success">
+            Success <span class="count">{{ success_count }}</span>
+        </button>
+        <button class="filter-btn {% if current_filter == 'warning' %}active{% endif %}" data-filter="warning">
+            Warning <span class="count">{{ warning_count }}</span>
+        </button>
+        <button class="filter-btn {% if current_filter == 'error' %}active{% endif %}" data-filter="error">
+            Error <span class="count">{{ error_count }}</span>
+        </button>
+    </div>
+</div>
+
+<!-- Notifications List -->
+<div class="notifications-container">
+    {% if notifications %}
+        {% for notification in notifications %}
+        <div class="notification-card {% if not notification.is_read %}unread{% endif %} notification-{{ notification.notification_type }}" data-id="{{ notification.id }}">
+            <div class="notification-card-header">
+                <div class="notification-type-badge badge-{{ notification.notification_type }}">
+                    {% if notification.notification_type == 'success' %}
+                        <i class="fas fa-check-circle"></i>
+                    {% elif notification.notification_type == 'warning' %}
+                        <i class="fas fa-exclamation-triangle"></i>
+                    {% elif notification.notification_type == 'error' %}
+                        <i class="fas fa-times-circle"></i>
+                    {% else %}
+                        <i class="fas fa-info-circle"></i>
+                    {% endif %}
+                    {{ notification.get_notification_type_display }}
+                </div>
+                {% if not notification.is_read %}
+                <span class="unread-indicator">New</span>
+                {% endif %}
+            </div>
+            
+            <div class="notification-card-body">
+                <h3>{{ notification.title }}</h3>
+                <p>{{ notification.message }}</p>
+                
+                {% if notification.link %}
+                <a href="{{ notification.link }}" class="notification-link">
+                    {{ notification.link_text|default:"View Details" }}
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                {% endif %}
+                
+                <div class="notification-meta">
+                    <span class="notification-time">
+                        <i class="fas fa-clock"></i>
+                        {{ notification.created_at|timesince }} ago
+                    </span>
+                </div>
+            </div>
+            
+            <div class="notification-card-actions">
+                {% if not notification.is_read %}
+                <button class="btn-icon btn-sm" onclick="markAsRead({{ notification.id }})" title="Mark as read">
+                    <i class="fas fa-check"></i>
+                </button>
+                {% endif %}
+                <button class="btn-icon btn-sm btn-edit" onclick="editNotification({{ notification.id }})" title="Edit">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="btn-icon btn-sm btn-delete" onclick="deleteNotification({{ notification.id }})" title="Delete">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-bell-slash"></i>
+            <h3>No notifications found</h3>
+            <p>Create your first notification to get started</p>
+            <button class="btn-primary" onclick="openCreateModal()">
+                <i class="fas fa-plus"></i> Create Notification
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Create/Edit Modal -->
+<div class="modal" id="notification-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-title">Create Notification</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        
+        <form id="notification-form" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="notification_id" id="notification_id">
+            
+            <div class="form-group">
+                <label for="title">Title <span class="required">*</span></label>
+                <input type="text" id="title" name="title" required maxlength="200">
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Message <span class="required">*</span></label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="notification_type">Type <span class="required">*</span></label>
+                <select id="notification_type" name="notification_type" required>
+                    <option value="info">Information</option>
+                    <option value="success">Success</option>
+                    <option value="warning">Warning</option>
+                    <option value="error">Error</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="link">Link URL (Optional)</label>
+                <input type="url" id="link" name="link" placeholder="https://example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="link_text">Link Text (Optional)</label>
+                <input type="text" id="link_text" name="link_text" maxlength="100" placeholder="View Details">
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Save Notification
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/manage-notifications.js' %}"></script>
+{% endblock %}

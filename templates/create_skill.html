@@ -4,6 +4,7 @@
 {% block title %}Create Skill - Admin Panel{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create-common.css' %}">
 <link rel="stylesheet" href="{% static 'css/create-skill.css' %}">
 {% endblock %}
 
@@ -16,29 +17,64 @@
 {% block user_info %}{% endblock %}
 
 {% block content %}
-<form class="create-form" id="create-skill-form">
+<div class="back-navigation">
+    <a href="{% url 'manage_skills' %}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back to Skills
+    </a>
+</div>
+
+<form class="create-form" id="create-skill-form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    {% if form.errors %}
+    <div class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        Please correct the errors below.
+    </div>
+    {% endif %}
+    
     <section class="section-card fade-in">
         <div class="section-header">
-            <h2>Skill Information</h2>
+            <h2><i class="fas fa-info-circle"></i> Skill Information</h2>
         </div>
         <div class="form-group">
-            <label class="form-label">Skill Name *</label>
-            <input type="text" class="form-input" placeholder="e.g., JavaScript, React, Python" required>
+            <label class="form-label">
+                <i class="fas fa-code"></i> Skill Name *
+            </label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <span class="error-message">{{ form.name.errors.0 }}</span>
+            {% endif %}
         </div>
         <div class="form-grid">
             <div class="form-group">
-                <label class="form-label">Skill Level *</label>
-                <select class="form-input" required>
-                    <option value="">Select Level</option>
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option>
-                    <option value="expert">Expert</option>
-                </select>
+                <label class="form-label">
+                    <i class="fas fa-layer-group"></i> Skill Level *
+                </label>
+                {{ form.skill_level }}
+                {% if form.skill_level.errors %}
+                    <span class="error-message">{{ form.skill_level.errors.0 }}</span>
+                {% endif %}
             </div>
             <div class="form-group">
-                <label class="form-label">Proficiency (%) *</label>
-                <input type="number" class="form-input" min="0" max="100" value="50" id="proficiency-input" required>
+                <label class="form-label">
+                    <i class="fas fa-chart-line"></i> Proficiency (%) *
+                </label>
+                {{ form.proficiency }}
+                {% if form.proficiency.errors %}
+                    <span class="error-message">{{ form.proficiency.errors.0 }}</span>
+                {% endif %}
                 <div class="proficiency-preview">
                     <div class="proficiency-bar">
                         <div class="proficiency-fill" id="proficiency-fill" style="width: 50%;"></div>
@@ -48,23 +84,29 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-label">Description</label>
-            <textarea class="form-textarea" rows="4" placeholder="Brief description of your skill level and experience"></textarea>
+            <label class="form-label">
+                <i class="fas fa-file-alt"></i> Description <span class="optional-badge">Optional</span>
+            </label>
+            {{ form.description }}
+            <small class="form-hint">Brief description of your skill level or experience</small>
+            {% if form.description.errors %}
+                <span class="error-message">{{ form.description.errors.0 }}</span>
+            {% endif %}
         </div>
     </section>
 
     <section class="section-card fade-in">
         <div class="section-header">
-            <h2>Skill Icon</h2>
+            <h2><i class="fas fa-icons"></i> Skill Icon <span class="optional-badge">Optional</span></h2>
         </div>
         <div class="icon-selector">
             <div class="icon-method">
                 <label class="radio-label">
-                    <input type="radio" name="icon-method" value="upload" checked>
+                    <input type="radio" name="icon_type" value="upload" {% if not form.icon_type.value or form.icon_type.value == 'upload' %}checked{% endif %}>
                     <span>Upload Custom Icon</span>
                 </label>
                 <label class="radio-label">
-                    <input type="radio" name="icon-method" value="fontawesome">
+                    <input type="radio" name="icon_type" value="fontawesome" {% if form.icon_type.value == 'fontawesome' %}checked{% endif %}>
                     <span>Use FontAwesome Icon</span>
                 </label>
             </div>
@@ -73,14 +115,20 @@
                     <i class="fas fa-image"></i>
                     <p>Click to upload skill icon</p>
                     <span class="file-info">PNG, JPG, SVG (Max 1MB)</span>
-                    <input type="file" accept="image/*" hidden>
+                    {{ form.icon_image }}
                 </div>
                 <div class="preview-container" id="icon-preview"></div>
+                {% if form.icon_image.errors %}
+                    <span class="error-message">{{ form.icon_image.errors.0 }}</span>
+                {% endif %}
             </div>
             <div class="icon-fontawesome-section" id="icon-fontawesome-section" style="display: none;">
                 <div class="form-group">
                     <label class="form-label">FontAwesome Class</label>
-                    <input type="text" class="form-input" placeholder="e.g., fab fa-react" id="fa-class-input">
+                    {{ form.icon_class }}
+                    {% if form.icon_class.errors %}
+                        <span class="error-message">{{ form.icon_class.errors.0 }}</span>
+                    {% endif %}
                     <div class="fa-icon-preview" id="fa-icon-preview">
                         <i class="fas fa-question"></i>
                     </div>
@@ -108,16 +156,16 @@
 
     <section class="section-card fade-in">
         <div class="section-header">
-            <h2>Certificate (Optional)</h2>
+            <h2><i class="fas fa-certificate"></i> Certificate <span class="optional-badge">Optional</span></h2>
         </div>
         <div class="certificate-method">
             <label class="radio-label">
-                <input type="radio" name="cert-method" value="file" checked>
-                <span>Upload Certificate File</span>
+                <input type="radio" name="certificate_type" value="file" {% if not form.certificate_type.value or form.certificate_type.value == 'file' %}checked{% endif %}>
+                <span><i class="fas fa-file-upload"></i> Upload Certificate File</span>
             </label>
             <label class="radio-label">
-                <input type="radio" name="cert-method" value="link">
-                <span>Certificate Link</span>
+                <input type="radio" name="certificate_type" value="link" {% if form.certificate_type.value == 'link' %}checked{% endif %}>
+                <span><i class="fas fa-link"></i> Certificate Link</span>
             </label>
         </div>
         <div class="cert-file-section" id="cert-file-section">
@@ -125,21 +173,35 @@
                 <i class="fas fa-certificate"></i>
                 <p>Click to upload certificate</p>
                 <span class="file-info">PDF, JPG, PNG (Max 5MB)</span>
-                <input type="file" accept=".pdf,image/*" hidden>
+                {{ form.certificate_file }}
             </div>
             <div class="preview-container" id="cert-preview"></div>
+            {% if form.certificate_file.errors %}
+                <span class="error-message">{{ form.certificate_file.errors.0 }}</span>
+            {% endif %}
         </div>
         <div class="cert-link-section" id="cert-link-section" style="display: none;">
             <div class="form-group">
-                <label class="form-label">Certificate URL</label>
-                <input type="url" class="form-input" placeholder="https://certificates.example.com/your-certificate">
+                <label class="form-label">
+                    <i class="fas fa-link"></i> Certificate URL
+                </label>
+                {{ form.certificate_url }}
+                <small class="form-hint">Link to online certificate (e.g., Coursera, Udemy)</small>
+                {% if form.certificate_url.errors %}
+                    <span class="error-message">{{ form.certificate_url.errors.0 }}</span>
+                {% endif %}
             </div>
         </div>
     </section>
+    
+    <!-- Hidden Fields -->
+    <input type="hidden" name="is_active" value="true">
+    <input type="hidden" name="order" value="0">
 
     <div class="form-actions">
         <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
-        <button type="submit" class="btn-primary">Add Skill</button>
+        <button type="button" class="btn-secondary" name="is_draft" value="true" id="save-draft-btn">Save as Draft</button>
+        <button type="submit" class="btn-primary">Publish Skill</button>
     </div>
 </form>
 {% endblock %}

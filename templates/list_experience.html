@@ -4,6 +4,7 @@
 {% block title %}All Experience - Admin Panel{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/list-common.css' %}">
 <link rel="stylesheet" href="{% static 'css/manage-experience.css' %}">
 <link rel="stylesheet" href="{% static 'css/view-all-experience.css' %}">
 {% endblock %}
@@ -23,6 +24,7 @@
     </a>
 </div>
 
+{% if total_count > 0 %}
 <div class="filter-bar section-card">
     <div class="search-wrapper">
         <i class="fas fa-search"></i>
@@ -30,9 +32,8 @@
     </div>
     <div class="filter-controls">
         <div class="filter-group">
-            <button class="filter-btn active" data-filter="all">All <span class="count">(5)</span></button>
-            <button class="filter-btn" data-filter="active">Current <span class="count">(4)</span></button>
-            <button class="filter-btn" data-filter="draft">Draft <span class="count">(1)</span></button>
+            <a href="{% url 'list_experience' %}" class="filter-btn {% if not current_filter or current_filter == 'all' %}active{% endif %}">All <span class="count">({{ total_count }})</span></a>
+            <a href="{% url 'list_experience' %}?filter=draft" class="filter-btn {% if current_filter == 'draft' %}active{% endif %}">Draft <span class="count">({{ draft_count }})</span></a>
         </div>
         <div class="sort-group">
             <label for="sort-select">Sort by:</label>
@@ -45,174 +46,77 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 <div class="experience-grid" id="all-experience-grid">
-    <!-- Current Experience -->
-    <div class="experience-card fade-in" data-status="active" data-title="Senior Full Stack Developer" data-date="2023-01-01">
+    {% for experience in experiences %}
+    <div class="experience-card {% if experience.is_draft %}draft{% endif %} {% if not experience.is_active %}inactive{% endif %} fade-in" data-status="{% if experience.is_draft %}draft{% else %}active{% endif %}" data-title="{{ experience.position }}" data-date="{{ experience.start_date|date:'Y-m-d' }}" data-experience-id="{{ experience.id }}">
         <div class="experience-header">
             <div class="company-logo">
-                <i class="fas fa-building"></i>
+                {% if experience.company_logo %}
+                    <img src="{{ experience.company_logo.url }}" alt="{{ experience.company_name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                {% else %}
+                    <i class="fas fa-building"></i>
+                {% endif %}
             </div>
             <div class="experience-info">
-                <h4 class="role-title">Senior Full Stack Developer</h4>
-                <p class="company-name">TechCorp Inc.</p>
+                <h4 class="role-title">{{ experience.position }}</h4>
+                <p class="company-name">{{ experience.company_name }}</p>
             </div>
         </div>
         <div class="experience-body">
             <div class="experience-meta">
-                <span class="duration"><i class="fas fa-calendar-alt"></i> Jan 2023 - Present</span>
-                <span class="employment-type"><i class="fas fa-briefcase"></i> Full-time</span>
+                <span class="duration"><i class="fas fa-calendar-alt"></i> {{ experience.duration }}</span>
+                <span class="employment-type"><i class="fas fa-briefcase"></i> {{ experience.get_employment_type_display }}</span>
             </div>
-            <p class="experience-description">Leading development of enterprise-level web applications using modern technologies. Mentoring junior developers and architecting scalable solutions.</p>
-            <div class="skills-tags">
-                <span class="skill-tag">React</span>
-                <span class="skill-tag">Node.js</span>
-                <span class="skill-tag">MongoDB</span>
-                <span class="skill-tag">AWS</span>
+            <p class="experience-description">{{ experience.short_description|truncatewords:25 }}</p>
+            <div class="experience-footer">
+                <div class="skills-tags">
+                    {% if experience.location %}
+                    <span class="skill-tag"><i class="fas fa-map-marker-alt"></i> {{ experience.location }}</span>
+                    {% endif %}
+                </div>
+                <div class="status-badges">
+                    {% if experience.is_draft %}
+                    <span class="status-badge status-draft">Draft</span>
+                    {% elif experience.employment_status == 'current' %}
+                    <span class="status-badge status-active">Current</span>
+                    {% else %}
+                    <span class="status-badge status-inactive">Past</span>
+                    {% endif %}
+                    {% if not experience.is_active %}
+                    <span class="status-badge status-inactive">Inactive</span>
+                    {% endif %}
+                </div>
             </div>
-            <span class="status-badge status-active">Current</span>
         </div>
         <div class="card-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
             <div class="action-buttons">
-                <button class="btn-icon btn-edit" title="Edit Experience"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete" title="Delete Experience"><i class="fas fa-trash-alt"></i> Delete</button>
+                <a href="{% url 'edit_experience' experience.id %}" class="btn-icon btn-edit" title="Edit Experience">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                </a>
+                <button class="btn-icon btn-delete" data-experience-id="{{ experience.id }}" data-experience-title="{{ experience.position }}" title="Delete Experience">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
             </div>
+            <label class="toggle-switch">
+                <input type="checkbox" class="experience-toggle" data-experience-id="{{ experience.id }}" {% if experience.is_active %}checked{% endif %}>
+                <span class="slider"></span>
+            </label>
         </div>
     </div>
-
-    <div class="experience-card fade-in" data-status="active" data-title="Frontend Developer" data-date="2021-03-01">
-        <div class="experience-header">
-            <div class="company-logo">
-                <i class="fas fa-building"></i>
-            </div>
-            <div class="experience-info">
-                <h4 class="role-title">Frontend Developer</h4>
-                <p class="company-name">WebSolutions Ltd.</p>
-            </div>
-        </div>
-        <div class="experience-body">
-            <div class="experience-meta">
-                <span class="duration"><i class="fas fa-calendar-alt"></i> Mar 2021 - Dec 2022</span>
-                <span class="employment-type"><i class="fas fa-briefcase"></i> Full-time</span>
-            </div>
-            <p class="experience-description">Developed responsive web interfaces and collaborated with UX designers to create engaging user experiences.</p>
-            <div class="skills-tags">
-                <span class="skill-tag">Vue.js</span>
-                <span class="skill-tag">JavaScript</span>
-                <span class="skill-tag">CSS3</span>
-                <span class="skill-tag">Figma</span>
-            </div>
-            <span class="status-badge status-active">Current</span>
-        </div>
-        <div class="card-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit" title="Edit Experience"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete" title="Delete Experience"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
+    {% empty %}
+    <div class="empty-state">
+        <i class="fas fa-briefcase"></i>
+        <p>No experience found. Add your first experience!</p>
     </div>
-
-    <div class="experience-card fade-in" data-status="active" data-title="Junior Web Developer" data-date="2019-06-01">
-        <div class="experience-header">
-            <div class="company-logo">
-                <i class="fas fa-building"></i>
-            </div>
-            <div class="experience-info">
-                <h4 class="role-title">Junior Web Developer</h4>
-                <p class="company-name">StartupHub</p>
-            </div>
-        </div>
-        <div class="experience-body">
-            <div class="experience-meta">
-                <span class="duration"><i class="fas fa-calendar-alt"></i> Jun 2019 - Feb 2021</span>
-                <span class="employment-type"><i class="fas fa-briefcase"></i> Full-time</span>
-            </div>
-            <p class="experience-description">Built and maintained company websites and landing pages. Learned agile development practices and team collaboration.</p>
-            <div class="skills-tags">
-                <span class="skill-tag">HTML5</span>
-                <span class="skill-tag">CSS3</span>
-                <span class="skill-tag">jQuery</span>
-                <span class="skill-tag">Bootstrap</span>
-            </div>
-            <span class="status-badge status-active">Current</span>
-        </div>
-        <div class="card-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit" title="Edit Experience"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete" title="Delete Experience"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="experience-card fade-in" data-status="active" data-title="Freelance Web Designer" data-date="2018-01-01">
-        <div class="experience-header">
-            <div class="company-logo">
-                <i class="fas fa-user-tie"></i>
-            </div>
-            <div class="experience-info">
-                <h4 class="role-title">Freelance Web Designer</h4>
-                <p class="company-name">Self-Employed</p>
-            </div>
-        </div>
-        <div class="experience-body">
-            <div class="experience-meta">
-                <span class="duration"><i class="fas fa-calendar-alt"></i> Jan 2018 - May 2019</span>
-                <span class="employment-type"><i class="fas fa-briefcase"></i> Freelance</span>
-            </div>
-            <p class="experience-description">Designed and developed custom websites for small businesses. Managed client relationships and project timelines.</p>
-            <div class="skills-tags">
-                <span class="skill-tag">WordPress</span>
-                <span class="skill-tag">Photoshop</span>
-                <span class="skill-tag">HTML/CSS</span>
-            </div>
-            <span class="status-badge status-active">Current</span>
-        </div>
-        <div class="card-actions">
-            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit" title="Edit Experience"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete" title="Delete Experience"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Draft Experience -->
-    <div class="experience-card draft fade-in" data-status="draft" data-title="Tech Lead" data-date="2025-11-01">
-        <div class="experience-header">
-            <div class="company-logo">
-                <i class="fas fa-building"></i>
-            </div>
-            <div class="experience-info">
-                <h4 class="role-title">Tech Lead</h4>
-                <p class="company-name">Innovation Labs</p>
-            </div>
-        </div>
-        <div class="experience-body">
-            <div class="experience-meta">
-                <span class="duration"><i class="fas fa-calendar-alt"></i> Nov 2025 - Present</span>
-                <span class="employment-type"><i class="fas fa-briefcase"></i> Full-time</span>
-            </div>
-            <p class="experience-description">Leading a team of developers in building next-generation AI-powered applications.</p>
-            <div class="skills-tags">
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">AI/ML</span>
-                <span class="skill-tag">Leadership</span>
-            </div>
-            <span class="status-badge status-draft">Draft</span>
-        </div>
-        <div class="card-actions">
-            <label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label>
-            <div class="action-buttons">
-                <button class="btn-icon btn-edit" title="Edit Experience"><i class="fas fa-pencil-alt"></i> Edit</button>
-                <button class="btn-icon btn-delete" title="Delete Experience"><i class="fas fa-trash-alt"></i> Delete</button>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 
+<div class="no-results" id="no-results" style="display: none;">
+    <i class="fas fa-search"></i>
+    <p>No experience found matching your criteria.</p>
+</div>
 <div class="no-results" id="no-results" style="display: none;">
     <i class="fas fa-search"></i>
     <p>No experience found matching your criteria.</p>
@@ -222,4 +126,3 @@
 {% block extra_js %}
 <script src="{% static 'js/view-all-experience.js' %}"></script>
 {% endblock %}
-
