@@ -21,7 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('portfolio.urls')),
+    path('api/', include('portfolio.api_urls')),  # API endpoints
+    path('', include('portfolio.urls')),  # Admin interface
 ]
 
 # Serve media files in development

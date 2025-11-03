@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin: 20px 0 10px;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        
+        .get { background: #28a745; color: white; }
+        .post { background: #007bff; color: white; }
+        .put { background: #ffc107; color: #333; }
+        .delete { background: #dc3545; color: white; }
+        
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        
+        .description {
+            margin-top: 10px;
+            color: #666;
+        }
+        
+        .params {
+            margin-top: 10px;
+        }
+        
+        .param {
+            display: flex;
+            margin: 5px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .param-name {
+            font-weight: bold;
+            color: #667eea;
+            min-width: 150px;
+        }
+        
+        .param-desc {
+            color: #666;
+        }
+        
+        .security {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .security h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+        }
+        
+        .example {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+        
+        .example pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Portfolio API Documentation</h1>
+            <p>Read-only REST API for accessing portfolio data</p>
+        </header>
+
+        <div class="section">
+            <h2>🔒 Security & Authentication</h2>
+            
+            <div class="security">
+                <h4>⚠️ Important Security Notes</h4>
+                <ul>
+                    <li><strong>Read-Only:</strong> All API endpoints are READ-ONLY. No write operations (POST, PUT, DELETE) are allowed from external sources.</li>
+                    <li><strong>CORS:</strong> API is restricted to allowed origins only. Update <code>CORS_ALLOWED_ORIGINS</code> in settings.py.</li>
+                    <li><strong>Rate Limiting:</strong> Anonymous users: 100 requests/hour</li>
+                    <li><strong>Data Filter:</strong> Only active and published content is exposed via API</li>
+                </ul>
+            </div>
+
+            <h3>Base URL</h3>
+            <div class="url">http://localhost:8000/api/</div>
+        </div>
+
+        <div class="section">
+            <h2>📁 Projects</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/projects/</span>
+                </div>
+                <div class="description">Get all active projects</div>
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">category</span>
+                        <span class="param-desc">Filter by category slug (optional)</span>
+                    </div>
+                    <div class="param">
+                        <span class="param-name">status</span>
+                        <span class="param-desc">Filter by status: draft, in_progress, published (optional)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/projects/{slug}/</span>
+                </div>
+                <div class="description">Get single project by slug</div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/projects/featured/</span>
+                </div>
+                <div class="description">Get top 6 featured projects</div>
+            </div>
+
+            <h3>Example Response</h3>
+            <div class="example">
+<pre>{
+  "count": 10,
+  "results": [
+    {
+      "id": 1,
+      "title": "E-Commerce Platform",
+      "slug": "ecommerce-platform",
+      "description": "Full-stack e-commerce solution...",
+      "category": {
+        "name": "Web Development",
+        "slug": "web-development"
+      },
+      "technologies": "React, Node.js, MongoDB",
+      "technologies_list": ["React", "Node.js", "MongoDB"],
+      "featured_image": "/media/projects/ecommerce.jpg",
+      "demo_url": "https://demo.example.com",
+      "github_url": "https://github.com/user/repo",
+      "screenshots": [
+        {
+          "image": "/media/screenshots/1.jpg",
+          "caption": "Homepage"
+        }
+      ]
+    }
+  ]
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💼 Experience</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/experience/</span>
+                </div>
+                <div class="description">Get all active work experience entries</div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/experience/{id}/</span>
+                </div>
+                <div class="description">Get single experience entry</div>
+            </div>
+
+            <h3>Example Response</h3>
+            <div class="example">
+<pre>{
+  "results": [
+    {
+      "id": 1,
+      "position": "Senior Full Stack Developer",
+      "company_name": "Tech Corp",
+      "company_logo": "/media/companies/logo.png",
+      "location": "San Francisco, CA",
+      "employment_type": "full_time",
+      "start_date": "2022-01-01",
+      "end_date": null,
+      "currently_working": true,
+      "duration": "2 years 10 months",
+      "description": "Leading development team...",
+      "technologies": "React, Django, AWS",
+      "images": []
+    }
+  ]
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Skills</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/skills/</span>
+                </div>
+                <div class="description">Get all active skills</div>
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">category</span>
+                        <span class="param-desc">Filter by category slug (optional)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/skills/top/</span>
+                </div>
+                <div class="description">Get top 10 skills by proficiency</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏆 Achievements</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/achievements/</span>
+                </div>
+                <div class="description">Get all active achievements</div>
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">category</span>
+                        <span class="param-desc">Filter by category slug (optional)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📂 Categories</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/categories/</span>
+                </div>
+                <div class="description">Get all categories</div>
+                <div class="params">
+                    <div class="param">
+                        <span class="param-name">type</span>
+                        <span class="param-desc">Filter by type: project, skill, achievement, experience (optional)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>👤 Profile</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/profile/</span>
+                </div>
+                <div class="description">Get user profile information</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Summary</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/summary/</span>
+                </div>
+                <div class="description">Get portfolio statistics and summary</div>
+            </div>
+
+            <h3>Example Response</h3>
+            <div class="example">
+<pre>{
+  "total_projects": 15,
+  "total_experience": 5,
+  "total_skills": 25,
+  "total_achievements": 10,
+  "active_projects": 12,
+  "active_experience": 4,
+  "active_skills": 20,
+  "active_achievements": 8,
+  "years_of_experience": 5
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>❤️ Health Check</h2>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span>
+                    <span class="url">/api/health/</span>
+                </div>
+                <div class="description">Check if API is running</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💻 Usage Example (JavaScript/Fetch)</h2>
+            
+            <div class="example">
+<pre>// Fetch all projects
+fetch('http://localhost:8000/api/projects/')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Projects:', data.results);
+  })
+  .catch(error => console.error('Error:', error));
+
+// Fetch featured projects
+fetch('http://localhost:8000/api/projects/featured/')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Featured projects:', data);
+  });
+
+// Fetch portfolio summary
+fetch('http://localhost:8000/api/summary/')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Stats:', data);
+  });</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Configuration for Production</h2>
+            
+            <h3>1. Update CORS Origins</h3>
+            <p>In <code>config/settings.py</code>, add your portfolio website URL:</p>
+            <div class="example">
+<pre>CORS_ALLOWED_ORIGINS = [
+    "https://yourportfolio.com",
+    "https://www.yourportfolio.com",
+]</pre>
+            </div>
+
+            <h3>2. Generate Secure API Key (Optional)</h3>
+            <p>Generate a random key and update in settings.py:</p>
+            <div class="example">
+<pre>API_KEY = 'your-super-secure-random-key-here'</pre>
+            </div>
+
+            <h3>3. Enable HTTPS in Production</h3>
+            <p>Ensure your portfolio site uses HTTPS for secure communication.</p>
+        </div>
+    </div>
+</body>
+</html>

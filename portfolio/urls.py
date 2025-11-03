@@ -1,10 +1,13 @@
 from django.urls import path
 from . import views
 from . import notification_views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     # Dashboard
     path("", views.dashboard, name="dashboard"),
+    # API Documentation
+    path("api-docs/", TemplateView.as_view(template_name="api_documentation.html"), name="api_documentation"),
     # Projects
     path("projects/", views.manage_projects, name="manage_projects"),
     path("projects/create/", views.create_project, name="create_project"),
